@@ -1,0 +1,17 @@
+.btn.btn-primary.example-appear.example-appear-active,
+.btn.btn-primary.example-appear.example-appear-active.active {
+    opacity: 0;
+    transform: translateX(70%) scale(1);
+    transition: none;
+}
+
+.btn.btn-primary {
+    opacity: 1;
+    transition: all .3s ease;
+    transform: translateX(0) scale(.75);
+}
+
+.btn-primary:not([disabled]):not(.disabled).active {
+    box-shadow: none!important;
+    transform: translateX(0) scale(1);
+}

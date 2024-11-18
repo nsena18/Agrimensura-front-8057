@@ -1,0 +1,352 @@
+.ReactTable .rt-tbody {
+  overflow: overlay;
+}
+
+.btn-divider {
+  width: 5px;
+  max-width: 5px;
+  padding: 0px;
+}
+
+.btn-separator {
+  width: 20px;
+  max-width: 20px;
+  padding: 0px;
+}
+
+.rt-button-header {
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.15);
+  user-select: none;
+  margin-bottom: 1px;
+  padding: 3px;
+}
+
+.Select.is-disabled,
+.Select.is-disabled>.Select-control {
+  background-color: #e6e6e6 !important;
+}
+
+.border-transparent,
+.background-transparent {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none !important;
+}
+
+.border-transparent:hover,
+.background-transparent:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: transparent;
+}
+
+.ReactTable.-striped.-highlight,
+.mimicTableHeader {
+  background: #e4e5e6;
+}
+
+.ReactTable {
+  margin-bottom: -10px !important;
+}
+
+.ReactTable .rt-thead .rt-resizable-header-content {
+  margin-bottom: 2px;
+}
+
+.ReactTable .rt-thead.-filters input,
+.ReactTable .rt-thead.-filters select {
+  background-color: #f9fadf;
+  padding: 0px 2px;
+  height: 23px;
+}
+
+.rt-th .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.rt-th .react-datepicker__input-container {
+  width: 100%;
+}
+
+.rt-th .react-datepicker__input-container input {
+  width: 100%;
+}
+
+.react-datepicker__time-list {
+  padding-right: 0px !important;
+}
+
+.ReactTable .rt-tbody .rt-td {
+  padding: 2px;
+}
+
+.ReactTable label {
+  margin-bottom: 0px !important;
+}
+
+.ReactTable .-pagination .-btn {
+  padding: unset!important;
+}
+
+.ReactTable .-pagination .-previous,
+.ReactTable .-pagination .-next,
+.ReactTable .-pagination .-pageInfo {
+  margin: unset;
+}
+
+.ReactTable .-pagination {
+  padding: 0px !important;
+  margin: 0px !important;
+  font-size: 0.875rem;
+}
+
+.rt-thead {
+  position: relative;
+}
+
+.rt-button-header {
+  border-radius: 5px 5px 0px 0px;
+}
+
+.ReactTable .rt-tbody {
+  max-height: calc(100vh - 185px);
+
+  .filtroConsultaTickets + div > & {
+    max-height: calc(100vh - 220px);
+  }
+
+}
+
+.rt-thead-title {
+  position: absolute;
+  transform: translateX(3rem);
+
+  @media screen and (min-width: 1025px){
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media(min-width:576px) {
+  .ReactTable .rt-thead.-header.rt-button-header {
+    height: 25px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .ReactTable .rt-tbody {
+    max-height: calc(100vh - 215px);
+  }
+  .rt-thead-title {
+    position: relative;
+    text-align: center;
+  }
+}
+
+.ReactTable .-pagination .-pageJump input {
+  width: 50px;
+  height: 29px;
+}
+
+.left-buttons button {
+  margin-right: 5px;
+}
+
+.right-buttons button {
+  margin-left: 5px;
+}
+
+
+// Modern theme
+.modern-theme {
+  margin-bottom: .25rem;
+
+  /* Table Header */
+  .rt-thead {
+
+    &.rt-button-header {
+      user-select: none;
+      background: rgb(242, 243, 246);
+      border: 1px solid rgb(221, 222, 228);
+      border-bottom: 0;
+      box-shadow: inset 1px 1px #fff;
+      padding: 0;
+      margin: 0;
+
+      .btn {
+        width: 40px;
+        height: 40px!important;
+        margin: 0;
+        border: 0;
+        background: transparent!important;
+        color: #3c4950!important;
+
+        @media (max-width: 768px) {
+          border-top: 1px solid #dddee4 !important;
+          box-shadow: inset 1px 1px #fff;
+        }
+        @media (max-width: 576px) {
+          border: 1px solid #dddee4 !important;
+          box-shadow: inset 1px 1px #fff;
+        }
+      }
+
+      .left-buttons .btn {
+        border-right: 1px solid rgb(221, 222, 228)!important;
+      }
+
+      .right-buttons .btn {
+        border-left: 1px solid rgb(221, 222, 228)!important;
+      }
+
+      .dropdown.show {
+        box-shadow: inset 0px 0px 0px 100px rgba(0, 0, 0, 0.05);
+        .btn {
+          color: #000!important;
+        }
+      }
+    }
+
+    .rt-thead-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      line-height: 40px;
+      font-weight: 400;
+      @media (max-width: 768px) {
+        margin: 0!important;
+        position: relative;
+        text-align: left;
+        padding: 0 1rem;
+      }
+    }
+
+    .right-buttons label:not(.form-check-label) {
+      line-height: 40px;
+      margin: 0!important;
+      padding: 0!important;
+      margin-right: 1rem!important;
+      font-weight: 100;
+      display: block!important;
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+    }
+
+  }
+
+  /* React Table */
+  .ReactTable {
+
+    &.-highlight {
+      background: transparent;
+      border-bottom-left-radius: .5rem;
+      border-bottom-right-radius: .5rem;
+    }
+
+    .rt-table {
+
+      // Table header
+      .rt-thead {
+        position: relative;
+        box-shadow: 0 2px 2px 0px #d4d4d4!important;
+
+        &.-filters {
+          input, select {
+            background: #fff;
+          }
+        }
+      }
+
+      // table body
+      .rt-tbody {
+        margin-top: 2px;
+        .rt-tr-group {
+          border-bottom: 0!important;
+
+          .rt-tr:not(.-padRow):hover {
+            cursor: pointer;
+            background: rgba(0,0,0,0.05);
+
+          }
+
+          .rt-tr {
+            .rt-td {
+              padding: 3px 8px!important;
+            }
+
+          }
+        }
+      }
+    }
+
+    .pagination-bottom {
+      border-bottom-left-radius: .5rem;
+      border-bottom-right-radius: .5rem;
+      overflow: hidden;
+      .-pagination {
+        .-previous, .-next {
+          border-radius: 0;
+          background: #29363d;;
+        }
+        .-center {
+          flex: 2.5;
+        }
+      }
+    }
+  }
+}
+.form-check-input {
+  margin-top: 0.25rem;
+}
+
+
+// Cards table
+.card-tables {
+  a {
+    text-decoration: none;
+    .card-body {
+      color: #000;
+    }
+  }
+
+  &.card-columns {
+    @media (min-width: 576px) {
+      column-count: 2;
+    }
+    @media (min-width: 768px) {
+      column-count: 3;
+    }
+    @media (min-width: 1200px) {
+      column-count: 4;
+    }
+  }
+
+  &.uniforme {
+    .card-img-top {
+      height: 300px;
+      object-fit: contain;
+    }
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
+}
+
+
+@media screen and (max-height: 660px) {
+  .modal-dialog {
+    margin: .25% auto 0;
+  }
+  .tab-content .tab-pane > .row:first-child {
+    margin-top: -1rem;
+  }
+  .ql-toolbar.ql-snow {
+    padding: 2px 8px;
+  }
+}

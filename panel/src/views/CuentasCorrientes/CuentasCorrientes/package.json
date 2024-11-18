@@ -1,0 +1,6 @@
+{
+  "name": "CuentasCorrientes",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./CuentasCorrientes.js"
+}

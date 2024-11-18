@@ -1,0 +1,6 @@
+{
+  "name": "ParadigmaColorPicker",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ParadigmaColorPicker.js"
+}

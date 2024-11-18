@@ -1,0 +1,51 @@
+.md-input {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    &__label {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0);
+        transform-origin: left;
+        margin: 0 0 0 1rem;
+        color: $secondary;
+        transition: all .2s ease;
+        font-size: 1rem;
+        cursor: text;
+    }
+
+    &__label--active {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transform: scale(0.8) translateY(-166%);
+        background: #fff;
+        padding: 0 .5rem;
+        transform-origin: left;
+        margin-left: .5rem;
+        cursor: unset;
+    }
+
+
+    &__button,
+    &__button:hover,
+    &__button:active {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: transparent!important;
+        border: none!important;
+        height: 100%;
+        box-shadow: none!important;
+    }
+
+    &__button:focus {
+        box-shadow: none;
+    }
+
+    .form-control:disabled {
+        background-color: unset!important;
+    }
+}

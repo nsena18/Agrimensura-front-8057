@@ -1,0 +1,6 @@
+{
+  "name": "Locked",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Locked.js"
+}

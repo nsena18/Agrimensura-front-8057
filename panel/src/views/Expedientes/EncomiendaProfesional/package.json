@@ -1,0 +1,6 @@
+{
+  "name": "EncomiendaProfesional",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./EncomiendaProfesional.js"
+}

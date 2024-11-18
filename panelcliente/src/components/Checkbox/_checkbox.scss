@@ -1,0 +1,23 @@
+.checkbox {
+    &__button {
+        background-color: unset;
+        padding: 0;
+        border: 0;
+        outline: none!important;
+        min-width: 20px;
+        text-align: left;
+    }
+
+    &__button:focus {
+        color: $primary;
+    }
+
+    &__label {
+        user-select: none;
+        cursor: pointer;
+    }
+
+    &--disabled {
+        color: $secondary;
+    }
+}

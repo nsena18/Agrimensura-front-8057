@@ -1,0 +1,72 @@
+module.exports = {
+    BASE_URL: BASE_URL,
+    auth: BASE_URL + "auth/",
+    clearToken: BASE_URL + "auth/clear-token/",
+    authCheck: BASE_URL + "auth/check/",
+    authCheckWithToken: BASE_URL + "auth/check-with-token/",
+    authLogout: BASE_URL + "auth/logout/",
+    authGetPermissions: BASE_URL + "auth/permissions/",
+    dashboard: {
+        stats: BASE_URL + "dashboard/",
+    },
+    descargas: BASE_URL + "descargas/",
+    usuarios: {
+        perfil: BASE_URL + "usuarios/perfil/",
+        usuarios: BASE_URL + "usuarios/usuarios/",
+        permisos: BASE_URL + "usuarios/permisos/",
+        grupos: BASE_URL + "usuarios/grupos/",
+        forgottenpass: BASE_URL + "usuarios/forgottenpass/",
+        forgottenpassdetail: BASE_URL + "usuarios/forgottenpass/$token/",
+    },
+    mails: {
+        //config: BASE_URL + "configuracion/mails/",
+        plantillas: BASE_URL + "mails/plantillas/",
+        casillas: BASE_URL + "mails/casillas/"
+    },
+    geograficas: {
+        provincias: BASE_URL + "geograficas/provincias/",
+        provinciasSelect: BASE_URL + "geograficas/provincias/select/",
+        localidades: BASE_URL + "geograficas/localidades/",
+        localidadesSelect: BASE_URL + "geograficas/localidades/select/",
+    },
+    calendar: {
+        tipoEventos: BASE_URL + "tipoeventos/",
+        tipoEventosSelect: BASE_URL + "tipoeventos/select/",
+        eventosCalendar: BASE_URL + "eventoscalendar/",
+        eventosUsuario: BASE_URL + "eventoscalendar/usuario/",
+        eventosUsuarioEncomienda: BASE_URL + "eventoscalendar/usuarioencomienda/"
+    },
+    comitentes: {
+        comitentes: BASE_URL + "comitentes/comitentes/",
+        comitentesSelect: BASE_URL + "comitentes/comitentes/select/",
+        categorias: BASE_URL + "comitentes/categorias/",
+        profesiones: BASE_URL + "comitentes/profesiones/",
+        profesionesSelect: BASE_URL + "comitentes/profesiones/select/",
+        usercomitente: BASE_URL + "comitentes/usercomitentes/",
+        createusercomitente: BASE_URL + "comitentes/createusercomitente/",
+        perfilcomitentes: BASE_URL + "comitentes/perfilcomitente/",
+    },
+    expedientes: {
+        estadosencomienda: BASE_URL + "expedientes/estadosencomienda/",
+        estadosencomiendaSelect: BASE_URL + "expedientes/estadosencomienda/select/",
+        estadolotes: BASE_URL + "expedientes/estadolotes/",
+        estadolotesSelect: BASE_URL + "expedientes/estadolotes/select/",
+        objetosdetrabajo: BASE_URL + "expedientes/objetosdetrabajo/",
+        objetosdetrabajoSelect: BASE_URL + "expedientes/objetosdetrabajo/select/",
+        tiposdeencomienda: BASE_URL + "expedientes/tiposdeencomienda/",
+        tiposdeencomiendaSelect: BASE_URL + "expedientes/tiposdeencomienda/select/",
+        situacionlotes: BASE_URL + "expedientes/situacionlotes/",
+        situacionlotesSelect: BASE_URL + "expedientes/situacionlotes/select/",
+        
+        encomiendaprofesional: BASE_URL + "expedientes/encomiendaprofesional/",
+        encomiendaprofesionalCliente: BASE_URL + "expedientes/encomiendaprofesional/clientes/",
+        encomiendaprofesionalarchivo: BASE_URL + "expedientes/encomiendaprofesional/archivoadjunto/",
+        encomiendaprofesionalSelect: BASE_URL + "expedientes/encomiendaprofesional/select/",
+        encomiendaUltimoNro: BASE_URL + "expedientes/encomiendaprofesional/ultimonro/",
+        encomiendaCambioEstado: BASE_URL + "expedientes/encomiendaprofesional/cambioestado/",
+        encomiendaCambioEstadoArchivo: BASE_URL + "expedientes/encomiendaprofesional/cambioestado/archivoadjunto/",
+
+        encomiendadocumento: BASE_URL + "expedientes/encomiendaprofesional/$id_encomienda/documento/$id_archivo/",
+    },
+    container: BASE_URL + "container/",
+}

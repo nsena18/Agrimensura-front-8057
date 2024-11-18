@@ -1,0 +1,75 @@
+body {
+    overflow: hidden;
+}
+
+/* Shortcut Bar */
+.shortcut-bar {
+    position: absolute;
+    transform: translateY(100%);
+    bottom: 0%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-height: 96px;
+    background-color: #fff;
+    z-index: 100000;
+    transition: transform .5s ease;
+    box-shadow: 0px -12px 21px -16px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.shortcut-bar--open {
+    transform: translateY(0);
+}
+
+/* ShorcutBar Toggle Button */
+.shortcut-bar__toggle-btn {
+    position: absolute;
+    top: -70px;
+    right: 30px;
+    height: 60px;
+    width: 60px;
+    font-size: 1.5rem!important;
+    z-index:100001;
+}
+
+/* ShortcutBar Delete Button */
+.shortcut-bar__delete-btn {
+    transform: scale(.75);
+    left: -60px;
+    transition: left .3s ease!important;
+    position: absolute;
+    top: -70px;
+    height: 60px;
+    width: 60px;
+    font-size: 1.5rem!important;
+    z-index:100001;
+}
+
+.shortcut-bar__delete-btn--open {
+    left: 30px;
+}
+
+/* ShortcutBar Shortcut Button */
+.shortcut-bar__shortcut-btn {
+    font-size: 1.2rem!important;
+    background-color: #fff!important;
+    color: #20a8d8!important;
+    border: #fff!important;
+}
+
+.shortcut-bar__shortcut-btn:hover {
+    background-color: #20a8d8!important;
+    color: #fff!important;
+    border: #20a8d8!important;
+}
+
+.shortcut-bar__shortcut-btn .fa {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 2px;
+}

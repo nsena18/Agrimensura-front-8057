@@ -1,0 +1,6 @@
+{
+  "name": "MediosDePago",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MediosDePago.js"
+}
