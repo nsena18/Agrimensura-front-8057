@@ -4,7 +4,7 @@ export default {
 	root: [{
 		name: 'General',
 		items: [
-			{
+			/* {
 				name: 'Expedientes',
 				icon: 'fa fa-file-text-o',
 				items: [
@@ -27,12 +27,12 @@ export default {
 				name: 'Cta Cte',
 				icon: 'fa fa-dollar',
 				items: [
-					/*{
-						name: 'Cuentas Corrientes',
-						url: '/ctacte/cuentascorrientes',
+					//{
+					//	name: 'Cuentas Corrientes',
+					//	url: '/ctacte/cuentascorrientes',
 						// icon: 'fa fa-dollar',
 						// permission: 'usuarios_view'
-					},*/	
+					//},	
 					{
 						name: 'Estado de Deuda',
 						url: '/ctacte/estadodeuda',
@@ -110,12 +110,12 @@ export default {
 							},
 						]
 					},
-					/*{
+					{
 						name: 'Categorias',
 						url: '/categorias/',
 						// icon: 'fa fa-cubes',
 						// permission: 'usuarios_view'
-					},*/
+					},
 					{
 						name: 'Profesiones',
 						url: '/profesiones/',
@@ -170,7 +170,7 @@ export default {
 						permission: 'email_plantillas_view'
 					}
 				]
-			},
+			}, */
 			{
 				name: 'Usuarios',
 				icon: 'fa fa-user',
