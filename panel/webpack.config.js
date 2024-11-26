@@ -13,6 +13,9 @@ const SRC_DIR = path.resolve(__dirname, 'src');
 console.log('BUILD_DIR', BUILD_DIR);
 console.log('SRC_DIR', SRC_DIR);
 
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+
 module.exports = (env = {}) => {
 	return {
 		entry: {
@@ -21,7 +24,7 @@ module.exports = (env = {}) => {
 		output: {
 			path: BUILD_DIR,
 			filename: '[name].bundle.js',
-			publicPath: env.prod ? '/static/public/admin/' : '/'
+			publicPath: env.prod ? '' : '/'
 		},
 		// watch: true,
 		devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
@@ -50,7 +53,8 @@ module.exports = (env = {}) => {
 									"regenerator": true
 								}],
 								'syntax-dynamic-import'
-							]
+							],
+
 						}
 					}
 				},
@@ -101,8 +105,25 @@ module.exports = (env = {}) => {
 				}]
 		},
 		plugins: [
-			new webpack.HotModuleReplacementPlugin(),
-			new webpack.optimize.UglifyJsPlugin(),//new webpack.optimize.UglifyJsPlugin({sourceMap: true}),
+			new webpack.HotModuleReplacementPlugin({
+				uglifyOptions: {
+					ecma: 6,
+				},
+			}),
+			//new webpack.optimize.UglifyJsPlugin(),
+			/* new webpack.optimize.UglifyJsPlugin({
+				sourceMap: true, mangle: false,
+				warnings: false,
+				
+
+			}), */
+			new UglifyJSPlugin({
+				sourceMap: true,
+				uglifyOptions: { ecma: 6 },
+				compress: {
+					warnings: false
+				}
+			}),
 			new webpack.NamedModulesPlugin(),
 			extractCSS,
 			extractSCSS,
