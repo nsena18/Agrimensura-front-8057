@@ -45,6 +45,13 @@ class Usuarios extends Component {
                     show: true,
                 },
                 {
+                    Header: "Grupo",
+                    id: "grupos",                    
+                    accessor: d => (d.grupos && d.grupos[0] ? d.grupos[0].nombre : 'Sin Asignar'),
+                    filterable: true,
+                    show: true,
+                },
+                {
                     Header: "Fecha Registro",
                     id: "date_joined",
                     className: "text-center",
