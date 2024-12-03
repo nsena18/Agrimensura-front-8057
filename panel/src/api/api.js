@@ -1,5 +1,6 @@
 module.exports = {
     BASE_URL: BASE_URL,
+    BASE_URL_FRONTEND : BASE_URL_FRONTEND,
     auth: BASE_URL + "auth/",
     clearToken: BASE_URL + "auth/clear-token/",
     authCheck: BASE_URL + "auth/check/",

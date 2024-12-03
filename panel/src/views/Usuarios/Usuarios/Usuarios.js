@@ -124,7 +124,7 @@ class Usuarios extends Component {
 
                 apiUrl={api.usuarios.usuarios}
                 columns={this.state.columns}
-                exportUrl={api.usuarios.usuarios}
+                /* exportUrl={api.usuarios.usuarios} */
                 title={"Usuarios"}
             />
         );

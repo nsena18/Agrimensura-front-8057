@@ -62,7 +62,7 @@ class Grupos extends Component {
                 ]}
                 apiUrl={api.usuarios.grupos}
                 columns={this.state.columns}
-                exportUrl={api.usuarios.grupos}
+               /*  exportUrl={api.usuarios.grupos} */
                 title={"Grupos"}
             />
         );

@@ -33,10 +33,12 @@ class AuthenticatedRoute extends React.Component {
 				this.props.history.push('/login');
 			} else if (onCheck) {
 				const check = onCheck(res);
-				if (check) {
+				console.log(check)
+				if (check) {					
 					if (/^https?:\/\//i.test(check)) {
 						window.location.assign(check); // redirecciona a la url
 					} else
+						//window.location.assign(check);
 						this.props.history.push(check);
 				} else {
 					this.setState({ isLoggedIn: true });
