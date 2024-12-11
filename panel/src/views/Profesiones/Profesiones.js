@@ -70,7 +70,7 @@ class Profesiones extends Component {
                 ]}
                 apiUrl={api.comitentes.profesiones}
                 columns={this.state.columns}
-                exportUrl={api.comitentes.profesiones}
+                /* exportUrl={api.comitentes.profesiones} */
                 title={"Profesiones"}
                 outerSort={outerSort}
             />

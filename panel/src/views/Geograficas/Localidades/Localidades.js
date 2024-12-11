@@ -73,7 +73,7 @@ class Localidades extends Component {
                 ]}
                 apiUrl={api.geograficas.localidades}
                 columns={this.state.columns}
-                exportUrl={api.geograficas.localidades}
+                /* exportUrl={api.geograficas.localidades} */
                 title={"Localidades"}
             />
         );

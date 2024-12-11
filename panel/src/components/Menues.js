@@ -4,7 +4,7 @@ export default {
 	root: [{
 		name: 'General',
 		items: [
-			/* {
+			{
 				name: 'Expedientes',
 				icon: 'fa fa-file-text-o',
 				items: [
@@ -14,16 +14,16 @@ export default {
 						// icon: 'fa fa-user',
 						permission: 'encomiendaprofesional_view'
 					},
-					{
+					/* {
 						name: 'Historial Enc.',
 						url: '/historialencomienda',
 						// icon: 'fa fa-user',
 						permission: 'encomiendaprofesional_view'
-					},
+					}, */
 					
 				]
 			},
-			{
+			/*{
 				name: 'Cta Cte',
 				icon: 'fa fa-dollar',
 				items: [
@@ -70,7 +70,7 @@ export default {
 				url: '/micalendario/',
 				icon: 'fa fa-calendar',
 				permission: 'eventoscalendar_view'
-			},
+			},*/
 			{
 				name: 'Configuración',
 				icon: 'fa fa-cogs',
@@ -148,7 +148,7 @@ export default {
 					},
 				]
 			},
-			{
+			/*{
 				name: 'Mails',
 				icon: 'fa fa-envelope-o',
 				// permission: 'config_mail',

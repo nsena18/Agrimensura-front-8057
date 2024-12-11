@@ -72,7 +72,7 @@ class EstadoLotes extends Component {
                 ]}
                 apiUrl={api.expedientes.estadolotes}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.estadolotes}
+                /* exportUrl={api.expedientes.estadolotes} */
                 title={"Estado Lotes"}
                 outerSort={outerSort}
             />

@@ -59,7 +59,7 @@ class Provincias extends Component {
                 ]}
                 apiUrl={api.geograficas.provincias}
                 columns={this.state.columns}
-                exportUrl={api.geograficas.provincias}
+                /* exportUrl={api.geograficas.provincias} */
                 title={"Provincias"}
             />
         );

@@ -72,7 +72,7 @@ class TiposDeEncomienda extends Component {
                 ]}
                 apiUrl={api.expedientes.tiposdeencomienda}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.tiposdeencomienda}
+                /* exportUrl={api.expedientes.tiposdeencomienda} */
                 title={"Tipo de Encomienda"}
                 outerSort={outerSort}
             />

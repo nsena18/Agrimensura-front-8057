@@ -72,7 +72,7 @@ class SituacionLotes extends Component {
                 ]}
                 apiUrl={api.expedientes.situacionlotes}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.situacionlotes}
+                /* exportUrl={api.expedientes.situacionlotes} */
                 title={"Situacion Lotes"}
                 outerSort={outerSort}
             />

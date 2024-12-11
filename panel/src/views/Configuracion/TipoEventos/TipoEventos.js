@@ -97,7 +97,7 @@ class TipoEventos extends Component {
                 ]}
                 apiUrl={api.calendar.tipoEventos}
                 columns={this.state.columns}
-                exportUrl={api.calendar.tipoEventos}
+                /* exportUrl={api.calendar.tipoEventos} */
                 title={"Tipos de Eventos"}
             />
         );

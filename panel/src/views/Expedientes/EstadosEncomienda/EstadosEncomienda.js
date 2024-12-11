@@ -114,7 +114,7 @@ class Canales extends Component {
                 ]}
                 apiUrl={api.expedientes.estadosencomienda}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.estadosencomienda}
+                /* exportUrl={api.expedientes.estadosencomienda} */
                 title={"Estados Encomienda"}
             />
         );

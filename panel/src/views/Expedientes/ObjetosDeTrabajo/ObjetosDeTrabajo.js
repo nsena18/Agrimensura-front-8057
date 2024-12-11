@@ -79,7 +79,7 @@ class ObjetosDeTrabajo extends Component {
                 ]}
                 apiUrl={api.expedientes.objetosdetrabajo}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.objetosdetrabajo}
+               /*  exportUrl={api.expedientes.objetosdetrabajo} */
                 title={"Objetos De Trabajo"}
                 outerSort={outerSort}
             />
