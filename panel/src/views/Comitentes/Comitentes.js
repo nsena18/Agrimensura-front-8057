@@ -109,7 +109,7 @@ class Comitentes extends Component {
                 ]}
                 apiUrl={api.comitentes.comitentes}
                 columns={this.state.columns}
-                exportUrl={api.comitentes.comitentes}
+                /* exportUrl={api.comitentes.comitentes} */
                 title={"Comitentes"}
                 outerSort={outerSort}
             />

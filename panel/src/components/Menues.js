@@ -14,12 +14,12 @@ export default {
 						// icon: 'fa fa-user',
 						permission: 'encomiendaprofesional_view'
 					},
-					/* {
+					{
 						name: 'Historial Enc.',
 						url: '/historialencomienda',
 						// icon: 'fa fa-user',
 						permission: 'encomiendaprofesional_view'
-					}, */
+					},
 					
 				]
 			},
@@ -52,14 +52,14 @@ export default {
 						permission: 'mediosdepago_view'
 					},	
 				]
-			},
+			},*/
 			{
 				name: 'Comitentes',
 				url: '/comitentes/',
 				icon: 'fa fa-user-circle-o',
 				permission: 'comitentes_view'
 			},
-			{
+			/*{
 				name: 'Notas',
 				url: '/notas/',
 				icon: 'fa fa-sticky-note-o',
