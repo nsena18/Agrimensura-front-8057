@@ -59,7 +59,7 @@ export default {
 				icon: 'fa fa-user-circle-o',
 				permission: 'comitentes_view'
 			},
-			/*{
+			{
 				name: 'Notas',
 				url: '/notas/',
 				icon: 'fa fa-sticky-note-o',
@@ -70,7 +70,7 @@ export default {
 				url: '/micalendario/',
 				icon: 'fa fa-calendar',
 				permission: 'eventoscalendar_view'
-			},*/
+			},
 			{
 				name: 'Configuración',
 				icon: 'fa fa-cogs',
