@@ -70,7 +70,7 @@ class Plantillas extends Component {
                 ]}
                 apiUrl={api.mails.plantillas}
                 columns={this.state.columns}
-                exportUrl={api.mails.plantillas}
+                /* exportUrl={api.mails.plantillas} */
                 title={"Plantillas"}
             />
         );

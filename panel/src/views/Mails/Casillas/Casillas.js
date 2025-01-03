@@ -76,7 +76,7 @@ class Casillas extends Component {
                 ]}
                 apiUrl={api.mails.casillas}
                 columns={this.state.columns}
-                exportUrl={api.mails.casillas}
+                /* exportUrl={api.mails.casillas} */
                 title={"Casillas"}
             />
         );

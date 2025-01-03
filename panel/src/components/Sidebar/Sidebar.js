@@ -52,7 +52,7 @@ class Sidebar extends Component {
                 <SidebarMinimizer
                     onSidebarMinimize={this.onSidebarMinimize}
                 />
-                <span className="author-brand mx-auto"><a href="http://paradigma.com.ar">Paradigma del Sur S.A.</a> &copy; {new Date().getFullYear()}</span>
+                <span className="author-brand mx-auto"><a href="#">Agrimensura </a> &copy; {new Date().getFullYear()}</span>
             </div>
         );
     }

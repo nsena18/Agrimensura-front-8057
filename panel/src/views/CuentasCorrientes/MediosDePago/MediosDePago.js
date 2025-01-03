@@ -66,7 +66,7 @@ class MediosDePago extends Component {
                 ]}
                 apiUrl={api.cuentasCorrientes.mediosDePago}
                 columns={this.state.columns}
-                exportUrl={api.cuentasCorrientes.mediosDePago}
+               /*  exportUrl={api.cuentasCorrientes.mediosDePago} */
                 title={"Medios de Pago"}
                 outerSort={outerSort}
             />

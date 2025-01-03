@@ -23,7 +23,7 @@ export default {
 					
 				]
 			},
-			/*{
+			{
 				name: 'Cta Cte',
 				icon: 'fa fa-dollar',
 				items: [
@@ -33,7 +33,7 @@ export default {
 						// icon: 'fa fa-dollar',
 						// permission: 'usuarios_view'
 					//},	
-					{
+					/* {
 						name: 'Estado de Deuda',
 						url: '/ctacte/estadodeuda',
 						// icon: 'fa fa-dollar',
@@ -44,7 +44,7 @@ export default {
 						url: '/ctacte/cobrosdeudas',
 						// icon: 'fa fa-dollar',
 						permission: 'cuentascorrientes_view'
-					},	
+					}, */	
 					{
 						name: 'Medios de Pago',
 						url: '/ctacte/mediosdepago',
@@ -52,7 +52,7 @@ export default {
 						permission: 'mediosdepago_view'
 					},	
 				]
-			},*/
+			},
 			{
 				name: 'Comitentes',
 				url: '/comitentes/',
@@ -148,7 +148,7 @@ export default {
 					},
 				]
 			},
-			/*{
+			{
 				name: 'Mails',
 				icon: 'fa fa-envelope-o',
 				// permission: 'config_mail',
@@ -170,7 +170,7 @@ export default {
 						permission: 'email_plantillas_view'
 					}
 				]
-			}, */
+			},
 			{
 				name: 'Usuarios',
 				icon: 'fa fa-user',
