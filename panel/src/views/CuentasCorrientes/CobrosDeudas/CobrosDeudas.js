@@ -109,7 +109,7 @@ class CobrosDeudas extends Component {
                 ]}
                 apiUrl={api.comitentes.comitentesCtaCte}
                 columns={this.state.columns}
-                exportUrl={api.comitentes.comitentesCtaCte}
+                /* exportUrl={api.comitentes.comitentesCtaCte} */
                 title={"Cobros Deudas"}
                 outerSort={outerSort}
             />

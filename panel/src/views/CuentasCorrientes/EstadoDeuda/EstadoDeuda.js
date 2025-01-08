@@ -235,7 +235,7 @@ class EstadoDeuda extends Component {
                 ]}
                 apiUrl={api.expedientes.encomiendaprofesionalEstadoDeuda}
                 columns={this.state.columns}
-                exportUrl={api.expedientes.encomiendaprofesional}
+                /* exportUrl={api.expedientes.encomiendaprofesional} */
                 title={"Estado de Deuda"}
                 outerSort={outerSort}
             />

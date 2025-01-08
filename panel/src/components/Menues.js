@@ -33,7 +33,7 @@ export default {
 						// icon: 'fa fa-dollar',
 						// permission: 'usuarios_view'
 					//},	
-					/* {
+					 {
 						name: 'Estado de Deuda',
 						url: '/ctacte/estadodeuda',
 						// icon: 'fa fa-dollar',
@@ -44,7 +44,7 @@ export default {
 						url: '/ctacte/cobrosdeudas',
 						// icon: 'fa fa-dollar',
 						permission: 'cuentascorrientes_view'
-					}, */	
+					},
 					{
 						name: 'Medios de Pago',
 						url: '/ctacte/mediosdepago',
