@@ -5,7 +5,7 @@ import ReactQuill, { Quill }  from 'react-quill';
 import './ParadigmaEditor.css';
 
 // Para que la alineación sea agregada en inline styles
-Quill.register(Quill.import('attributors/style/align'), true);
+//Quill.register(Quill.import('attributors/style/align'), true);
 
 class ParadigmaEditor extends Component {
 

@@ -126,7 +126,7 @@ class Login extends Component {
 
 				<footer className="login-footer">
 					<div className="float-right">© {moment().format('YYYY')}</div>
-					<img src={logoParadigma} width={120} className="mx-2" alt="Logo Paradigma" />
+					<span>&nbsp; Agrimensura&nbsp; </span>
 				</footer>
 			</div>
 		);

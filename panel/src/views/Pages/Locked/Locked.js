@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Alert } fro
 import { NavLink } from 'react-router-dom';
 import auth from '../../../auth/';
 import { BeatLoader } from 'react-spinners';
-
+import moment from 'moment';
 import './Locked.css';
 
 class Locked extends Component {
@@ -121,8 +121,8 @@ class Locked extends Component {
                 </Container>
 
                 <footer className="login-footer">
-                    <div className="float-right">© 2018</div>
-                    <div className="logoParadigma"></div>
+                    <div className="float-right">© {moment().format('YYYY')}</div>
+                    <span>&nbsp; Agrimensura&nbsp; </span>
                 </footer>
             </div>
         );
