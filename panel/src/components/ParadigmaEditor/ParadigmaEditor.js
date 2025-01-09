@@ -1,51 +1,71 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactQuill, { Quill }  from 'react-quill';
 
 import './ParadigmaEditor.css';
 
-// Para que la alineación sea agregada en inline styles
-//Quill.register(Quill.import('attributors/style/align'), true);
-
 class ParadigmaEditor extends Component {
-
-    handleChange = value => {
-        if (this.props.onChange) this.props.onChange(value);
+    constructor(props) {
+      super(props);
+      this.editorRef = React.createRef();
+      this.quill = null;
     }
-
-    static propTypes = {
-        disabled: PropTypes.bool,
-        value: PropTypes.string,
-        onChange: PropTypes.func
+  
+    componentDidMount() {
+        if (window.Quill) {
+            this.quill = new window.Quill(this.editorRef.current, {
+                theme: 'snow',
+                readOnly: this.props.disabled,
+                modules: {
+                  toolbar: this.props.disabled
+                    ? false
+                    : [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ header: [1, 2, false, 5] }],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ color: [] }, { background: [] }],
+                        [{ align: [] }],
+                        ['clean'],
+                        ['link'],
+                      ],
+                  clipboard: true, // Asegura que el clipboard no está bloqueado
+                },
+              });
+      
+          // Set initial value
+          if (this.props.value) {
+            this.quill.clipboard.dangerouslyPasteHTML(this.props.value);
+          }
+      
+          this.quill.on('text-change', () => {
+            if (this.props.onChange) {
+              this.props.onChange(this.quill.root.innerHTML);
+            }
+          });
+        }
     }
-
+  
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value && this.quill) {
+          const currentRange = this.quill.getSelection();
+          if (this.props.value !== this.quill.root.innerHTML) {
+            this.quill.clipboard.dangerouslyPasteHTML(this.props.value || '');
+            if (currentRange) {
+              this.quill.setSelection(currentRange);
+            }
+          }
+        }
+    }
+      
+  
     render() {
-
-        const { disabled } = this.props;
-        const modules = {
-            toolbar: disabled ?
-                false :
-                [
-                    [ 'bold', 'italic', 'underline','strike' ],
-                    [{ 'header': [1, 2, false, 5] }],
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
-                    ['clean'],
-                    ['link']
-                ]
-        };
-
-        return (
-            <ReactQuill
-                className={disabled ? 'ql-disabled' : ''}
-                value={this.props.value}
-                onChange={this.handleChange}
-                modules={modules}
-                readOnly={disabled}
-            />
-        );
+      return <div ref={this.editorRef} className="quill-editor-container" />;
     }
-}
-
-export default ParadigmaEditor;
+  }
+  
+  ParadigmaEditor.propTypes = {
+    disabled: PropTypes.bool,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+  };
+  
+  export default ParadigmaEditor;

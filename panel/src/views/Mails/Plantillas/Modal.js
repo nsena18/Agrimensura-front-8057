@@ -265,11 +265,13 @@ class Modal extends Component {
                 <Row className="my-1 mx-0">
                     <Col className="px-0 col-12 col-md-8">
                     <Label>Cuerpo</Label>
-                        <ParadigmaEditor
-                            disabled={vars.disabled}
-                            value={this.state.cuerpo}
-                            onChange={this.onCuerpoChange}
-                        />
+                        <div style={{ width: '100%', minHeight: '300px', margin: '0 auto' }}>
+                            <ParadigmaEditor
+                                disabled={vars.disabled}
+                                value={this.state.cuerpo}
+                                onChange={this.onCuerpoChange}
+                            />
+                        </div>
                     </Col>
 
                     {/*<Col className="col-12 col-md-4">

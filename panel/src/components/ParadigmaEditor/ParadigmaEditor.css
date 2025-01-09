@@ -1,9 +1,17 @@
-.ql-container {
-  box-sizing: border-box;
-  height: 100%;
-  margin: 0px;
-  position: relative;
+.quill-editor-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  min-height: 500px !important; 
 }
+
+.ql-container {
+  flex: 1; 
+  overflow-y: auto;
+  min-height: 200px !important;
+  white-space: pre-wrap;
+}
+
 .ql-container.ql-disabled .ql-tooltip {
   visibility: hidden;
 }

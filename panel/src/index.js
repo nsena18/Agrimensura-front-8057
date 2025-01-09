@@ -24,6 +24,41 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 import auth from './auth/'
 import api from './api/'
+/* import { Quill }  from 'react-quill';
+// Sobrescribir el constructor de Scroll
+
+const ScrollClass = Quill.import('blots/scroll');
+
+class PatchedScroll extends ScrollClass {
+  constructor(domNode, config) {
+      try {
+          // Llama al constructor original
+          super(domNode, config);
+
+          if (domNode) {
+              // Reemplazar DOMNodeInserted con MutationObserver
+              const observer = new MutationObserver((mutationsList) => {
+                  for (const mutation of mutationsList) {
+                      console.log('Mutation observed:', mutation);
+                  }
+              });
+
+              observer.observe(domNode, { childList: true, subtree: true });
+          } else {
+              console.warn('PatchedScroll: domNode is undefined or null.');
+          }
+
+          // Llamadas adicionales si es necesario
+          this.optimize();
+          this.enable();
+      } catch (error) {
+          console.error('Error in PatchedScroll constructor:', error);
+      }
+  }
+}
+
+// Registrar el parche
+Quill.register('blots/scroll', PatchedScroll, true); */
 
 ReactDOM.render((
   <DragDropContextProvider backend={HTML5Backend}>
