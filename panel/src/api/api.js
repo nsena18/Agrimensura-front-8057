@@ -65,7 +65,8 @@ module.exports = {
     mails: {
         config: BASE_URL + "mails/configuracionmail/",
         plantillas: BASE_URL + "mails/plantillas/",
-        casillas: BASE_URL + "mails/casillas/"
+        casillas: BASE_URL + "mails/casillas/",
+        emailImages: BASE_URL + "mails/plantillas/uploadimage/",
     },
     cuentasCorrientes: {
         movimientos: BASE_URL + "cuentascorrientes/",

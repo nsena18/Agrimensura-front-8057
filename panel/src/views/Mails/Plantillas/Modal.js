@@ -270,6 +270,7 @@ class Modal extends Component {
                                 disabled={vars.disabled}
                                 value={this.state.cuerpo}
                                 onChange={this.onCuerpoChange}
+                                urlImage={api.mails.emailImages}
                             />
                         </div>
                     </Col>

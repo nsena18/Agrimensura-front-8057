@@ -117,6 +117,7 @@ module.exports = {
     header: function (token) {
         return {
             headers: {
+                'Accept': 'application/json',
                 "Authorization": "Token " + (token ? token : localStorage.token),
             },
         };
