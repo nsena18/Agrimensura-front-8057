@@ -69,15 +69,15 @@ class Modal extends Component {
     }
 
     getData() {
-        const { precioUnitario, postVariables, estado, importePresupuesto } = this.state;
+        const { precioUnitario, postVariables, estado, importePresupuesto, mostrarImporte } = this.state;
         let data = {};
         postVariables.forEach(x => {
             data[x] = this.state[x];
         });
 
-       /*  if(estado==2){ */
+       if( mostrarImporte ){
         data['importePresupuesto'] = parseFloat(importePresupuesto.replace('.','').replace(',','.'));
-        /* } */
+        }
 
         return data;
     }
