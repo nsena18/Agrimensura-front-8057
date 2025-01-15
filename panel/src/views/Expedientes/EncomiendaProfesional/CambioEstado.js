@@ -36,6 +36,7 @@ class Modal extends Component {
             errors: [],
 
             importePresupuesto: '0,00',
+            mostrarImporte : false,
         };
     }
 
@@ -63,6 +64,7 @@ class Modal extends Component {
             errors: [],
 
             importePresupuesto: '0,00',
+            mostrarImporte : false,
         });
     }
 
@@ -73,9 +75,9 @@ class Modal extends Component {
             data[x] = this.state[x];
         });
 
-        if(estado==2){
-            data['importePresupuesto'] = parseFloat(importePresupuesto.replace('.','').replace(',','.'));
-        }
+       /*  if(estado==2){ */
+        data['importePresupuesto'] = parseFloat(importePresupuesto.replace('.','').replace(',','.'));
+        /* } */
 
         return data;
     }
@@ -123,7 +125,6 @@ class Modal extends Component {
                     estadoARetroceder = (!estadoAnt.primerEstado) ? estadoAnt.nombre : '';
                 }
             }
-
             this.setState({
                 id: data.id,
 
@@ -133,8 +134,8 @@ class Modal extends Component {
                 // estado: data.estado+1,
                 estado: (ar_estados && ar_estados.filter((f) => f.id==data.estado).length>0 && ar_estados.filter((f) => f.id==data.estado)[0].proximosEstado.length>0) ? (ar_estados.filter((f) => f.id==data.estado)[0].proximosEstado[0].numero) : (null),
                 estadoAnterior: data.estado,
-
                 estadoARetroceder: estadoARetroceder,
+
             });
         }
     }
@@ -230,12 +231,21 @@ class Modal extends Component {
         })
     }
 
+    changeValuesSelect = (data, listStatus) => {
+        let res = listStatus.find(objeto => objeto.id == data.id);
+        let valRes = false;
+        if (res) {
+            valRes = res.mostrarImporte;
+        } 
+        this.setState({estado: data.id, mostrarImporte: valRes})
+    }
+
     render() {
         let vars = this.modalVars();
         const { action, ar_estados } = this.props;
-        const { estadoAnterior, estado, observaciones, archivoAdjunto, estadoARetroceder, importePresupuesto } = this.state;
+        const { estadoAnterior, estado, observaciones, archivoAdjunto, estadoARetroceder, importePresupuesto, mostrarImporte } = this.state;
         let obj_estadoAnterior = ar_estados.filter((f) => f.id==estadoAnterior);
-        
+
         return (
             <ParadigmaModal
                 getUrl={(vars.get ? api.expedientes.encomiendaprofesional : null)}
@@ -280,9 +290,9 @@ class Modal extends Component {
                                 <ParadigmaAsyncSeeker
                                     url={undefined}
                                     clearable={false}
-                                    optionDefault={obj_estadoAnterior[0].proximosEstado.map(e => {return {nombre: ((e.numero==estadoAnterior) ? 'Reenviar Presupuesto' : e.nombre), id: e.numero,}})}
+                                    optionDefault={obj_estadoAnterior[0].proximosEstado.map(e => {return {nombre: ((e.numero==estadoAnterior) ? 'Reenviar Presupuesto' : e.nombre), id: e.numero, show : e.mostrarImporte }})}
                                     value={estado}
-                                    onChange={data => (data) ? (this.setState({estado: data.id})): (this.setState({estado: null}))}
+                                    onChange={data => (data) ?  this.changeValuesSelect(data, ar_estados) : (this.setState({estado: null, mostrarImporte:false}))}
                                 />
                             }
                             error={() => this.getError('selectestado')}
@@ -304,23 +314,24 @@ class Modal extends Component {
                         error={() => this.getError('archivoAdjunto')}
                     />
 
-                    {estado==2 &&
-                    <ParadigmaLabeledInput
-                        md={[4, 8]}
-                        label={"Importe"}
-                        error={() => this.getError('importe')}
-                        inputComponent={
-                            <ParadigmaCurrencyInput 
-                                type="text"
-                                disabled={vars.disabled}
-                                value={importePresupuesto}
-                                onChange={(data) => this.onChangeField('importePresupuesto', data)}
-                                className={'monto'}
-                                dobleSimboloDecimal={true}
-                                selectOnFocus={true}
-                                onBlurComplete={true}
-                            />}
-                    />}
+                    {mostrarImporte == true &&
+                        <ParadigmaLabeledInput
+                            md={[4, 8]}
+                            label={"Importe"}
+                            error={() => this.getError('importe')}
+                            inputComponent={
+                                <ParadigmaCurrencyInput 
+                                    type="text"
+                                    disabled={vars.disabled}
+                                    value={importePresupuesto}
+                                    onChange={(data) => this.onChangeField('importePresupuesto', data)}
+                                    className={'monto'}
+                                    dobleSimboloDecimal={false}
+                                    selectOnFocus={true}
+                                    onBlurComplete={true}
+                                />}
+                        />
+                    }
     
                     <ParadigmaLabeledInput
                         md={[4, 8]}

@@ -37,11 +37,13 @@ class Modal extends Component {
             plantilla_id: null,
             activeMail: false,
 
+            mostrarImporte: false,
+
             postVariables: ['numero', 'nombre', 'background', 'texto', 'diasEstimados',
                             'permisosNivel1', 'permisosNivel2', 'archivoObligatorio', 'labelArchivo', 
                             'proximosEstado', 'sePuedeAvanzar', 'mensajeError', 'tituloModal',
                             'primerEstado', 'editarEncomienda', 'anvazaCliente', 'iconoEstado',
-                            'plantilla_id', 'activeMail'],
+                            'plantilla_id', 'activeMail', 'mostrarImporte'],
             errors: [],
         };
     }
@@ -76,6 +78,8 @@ class Modal extends Component {
 
             plantilla_id: null,
             activeMail: false,
+
+            mostrarImporte: false,
 
             errors: [],
         });
@@ -127,6 +131,7 @@ class Modal extends Component {
 
                 plantilla_id: data.plantilla ? data.plantilla.id : null,
                 activeMail: data.activeMail,
+                mostrarImporte: data.mostrarImporte,
             })
         }
     }
@@ -228,7 +233,7 @@ class Modal extends Component {
 
     render() {
         const { numero, nombre, background, texto, diasEstimados, permisosNivel1, permisosNivel2, archivoObligatorio, labelArchivo, proximosEstado, 
-                sePuedeAvanzar, mensajeError, tituloModal, primerEstado, editarEncomienda, anvazaCliente, iconoEstado, plantilla_id, activeMail } = this.state;
+                sePuedeAvanzar, mensajeError, tituloModal, primerEstado, editarEncomienda, anvazaCliente, iconoEstado, plantilla_id, activeMail, mostrarImporte } = this.state;
         let vars = this.modalVars();
         
         return (
@@ -451,6 +456,13 @@ class Modal extends Component {
                             <input type="checkbox" style={{marginTop: '5px', cursor: 'pointer'}} className="filled-in" checked={editarEncomienda} onChange={(e) => {}}/>
                             <span style={{marginLeft: '10px', cursor: 'pointer'}}>
                                 {' Editar Encomienda'}
+                            </span>
+                    </Col>
+
+                    <Col className={'col-6 mt-2'} onClick={() => {this.onChangeField('mostrarImporte', !mostrarImporte);}}>
+                            <input type="checkbox" style={{marginTop: '5px', cursor: 'pointer'}} className="filled-in" checked={mostrarImporte} onChange={(e) => {}}/>
+                            <span style={{marginLeft: '10px', cursor: 'pointer'}}>
+                                {' Mostrar Importe '}
                             </span>
                     </Col>
                     
