@@ -47,6 +47,13 @@ class ParadigmaLabeledInput extends Component {
 			this.setState({ value: nextProps.value, error: nextProps.error });
 		}
 	}
+	
+	/* componentDidUpdate(prevProps) {
+		if (prevProps.value !== this.props.value) {
+			this.setState({ value: this.props.value });
+		}
+	} */
+	
 
 	getError() {
 		let error = this.state.error;

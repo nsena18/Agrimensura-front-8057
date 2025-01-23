@@ -342,7 +342,7 @@ class EncomiendaProfesional extends Component {
                 ]}
                 apiUrl={api.expedientes.encomiendaprofesional}
                 columns={this.state.columns}
-                /* exportUrl={api.expedientes.encomiendaprofesional} */
+                exportUrl={api.expedientes.encomiendaprofesional}
                 title={"Encomienda Profesional."}
                 outerSort={outerSort}
             />

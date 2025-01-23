@@ -108,19 +108,30 @@ class Modal extends Component {
         });
     }
 
+   /*  componentDidUpdate(prevProps, prevState) {
+        if (this.inputRef.current && prevState.nombre !== this.state.nombre) {
+            this.inputRef.current.focus();
+        }
+    } */
+
     onChangeField(field, value) {
+        console.log(field)
+        console.log(value)
         this.setState(prevState => {
             let errors = prevState.errors;
             if (errors) errors[field] = null;
             prevState.errors = errors;
+           
             if (field === "imagen") {
                 value = value === "Imagen" ? true : false;
                 prevState[field] = value;
             }
-            else
+            else {
                 prevState[field] = value;
+            }
             return prevState;
         });
+        console.log(this.state)
     }
 
     getError(field) {
@@ -294,7 +305,7 @@ class Modal extends Component {
                 saveReloadButton={vars.saveReloadButton}
                 saveReloadButtonLabel={vars.saveReloadButtonLabel}
                 closeButton={true}
-                
+
                 buttonLabel={(vars.buttonLabel) ? (vars.buttonLabel) : ('')}
                 escClose={true}
             >
@@ -304,10 +315,11 @@ class Modal extends Component {
                 <ParadigmaLabeledInput
                     label="Nombre"
                     md={[3, 9]}
-                    value={nombre}
+                    value={this.state.nombre}
                     disabled={vars.disabled}
                     onChange={(e) => this.onChangeField('nombre', e.target.value)}
                     error={() => this.getError('nombre')}
+                    maxLength={100}
                 />
 
                 <ParadigmaLabeledInput
@@ -317,7 +329,7 @@ class Modal extends Component {
                         <ParadigmaAsyncSeeker
                             disabled={vars.disabled}
                             url={api.calendar.tipoEventosSelect}
-                            value={tipoEvento_id}
+                            value={this.state.tipoEvento_id}
                             parameters={{
                                 paginationEnabled:false,
                                 sort:['nombre']
@@ -339,7 +351,7 @@ class Modal extends Component {
                             <Col className={"col-12 col-sm-5 pl-0 ml-3"}>
                                 <ParadigmaDatePicker
                                     disabled={vars.disabled}
-                                    value={comienzo}
+                                    value={this.state.comienzo}
                                     onChange={(e) => this.setState({ 'comienzo': e })}
                                     datetime={true}
                                     className={"dp_datetime"}
@@ -347,7 +359,7 @@ class Modal extends Component {
                             </Col>
                             <Col className={"col-12 col-sm-6 pl-0"}>
                                 <label className={"col-12"}>
-                                    <input type="checkbox" disabled={vars.disabled} className="filled-in" checked={entreFechas} onChange={(e) => {}}/>
+                                    <input type="checkbox" disabled={vars.disabled} className="filled-in" checked={this.state.entreFechas} onChange={(e) => {}}/>
                                     <span onClick={() => {(!vars.disabled) ? this.setState({entreFechas: !entreFechas}): null}}>Entre Fechas</span>
                                 </label>
                             </Col>
@@ -364,7 +376,7 @@ class Modal extends Component {
                     inputComponent={
                         <ParadigmaDatePicker
                             disabled={vars.disabled}
-                            value={fin}
+                            value={this.state.fin}
                             onChange={(e) => this.setState({ 'fin': e })}
                             datetime={true}
                             className={"dp_datetime"}
@@ -379,7 +391,7 @@ class Modal extends Component {
                         <textarea
                             className="form-control"
                             disabled={vars.disabled}
-                            value={descripcion}
+                            value={this.state.descripcion}
                             onChange={(e) => this.onChangeField('descripcion', e.target.value)}
                             style={{ height: 50 }}
                         ></textarea>
@@ -395,7 +407,7 @@ class Modal extends Component {
                             disabled={vars.disabled}
                             url={api.expedientes.encomiendaprofesionalSelect}
                             displayField={"nroOrden"}
-                            value={encomiendaProfesional_id}
+                            value={this.state.encomiendaProfesional_id}
                             parameters={{
                                 paginationEnabled:false,
                                 sort:['fechaIngreso']
@@ -415,13 +427,13 @@ class Modal extends Component {
                     <div className={"col-12 col-md-12 mt-sm-1 row"}>
                         <div className={"col-12 col-md-4"}>
                             <label onClick={(vars.disabled) ? (null) : (() => {this.onChangeField('visible', 1)})}>
-                                <input type="radio" disabled={vars.disabled} name="group1" className={"with-gap filled-in"} value="1" onChange={() => {}} checked={visible === 1} />
+                                <input type="radio" disabled={vars.disabled} name="group1" className={"with-gap filled-in"} value="1" onChange={() => {}} checked={this.state.visible === 1} />
                                 <span>Usuario</span> 
                             </label>
                         </div>
                         <div className={"col-12 col-md-4"}>
                             <label onClick={(vars.disabled) ? (null) : (() => {this.onChangeField('visible', 2)})}>
-                                <input type="radio" disabled={vars.disabled} name="group1" className={"with-gap filled-in"} value="2" onChange={() => {}} checked={visible === 2} />
+                                <input type="radio" disabled={vars.disabled} name="group1" className={"with-gap filled-in"} value="2" onChange={() => {}} checked={this.state.visible === 2} />
                                 <span>Todos</span>
                             </label>
                         </div>
@@ -447,7 +459,7 @@ class Modal extends Component {
                                 //url={`${api.usuarios.usuarios}?is_staff=1`}
                                 // url={`${api.tickets.usuariosSelect}?is_staff=1`}
                                 url={api.usuarios.usuarios}
-                                value={usuario}
+                                value={this.state.usuario}
                                 // onChange={data => this.onChangeField('usuario', data ? data.id : null)}
                                 onChange={data => this.onChangeField('usuario', data ? data.map(e => e.id) : [])}
                                 //displayField={"apellido_nombre"}
@@ -470,7 +482,7 @@ class Modal extends Component {
                                 disabled={vars.disabled}
                                 multiselect={true}
                                 url={api.comitentes.comitentes}
-                                value={comitentes}
+                                value={this.state.comitentes}
                                 onChange={data => this.onChangeField('comitentes', data ? data.map(e => e.id) : [])}
                                 displayField={"apellido_nombre"}
                                 parameters={{

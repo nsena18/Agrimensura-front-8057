@@ -192,7 +192,7 @@ class Notas extends Component {
                 ]}
                 apiUrl={api.notas.notas}
                 columns={this.state.columns}
-                /* exportUrl={api.notas.notas} */
+                exportUrl={api.notas.notas}
                 title={"Notas"}
                 outerSort={outerSort}
             />
