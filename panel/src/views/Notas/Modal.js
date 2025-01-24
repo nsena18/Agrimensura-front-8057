@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import api from "../../api";
 import { formatCurrency } from '../../functions/functions';
 
-import { Row, Col, Label, Input, InputGroup, FormFeedback } from 'reactstrap';
+import { Row, Col, Label, Input, InputGroup, FormFeedback, FormGroup } from 'reactstrap';
 import moment from 'moment';
 
 import ParadigmaModal from "../../components/ParadigmaModal/ParadigmaModal.js"
@@ -29,6 +29,7 @@ class Modal extends Component {
             postVariables: ['descripcion', 'fecha', 'destinatario_id', 'encomiendaProfesional_id'],
             errors: [],
         };
+        this.descripcionRef = React.createRef();
     }
 
     static propTypes = {
@@ -36,7 +37,6 @@ class Modal extends Component {
         id: PropTypes.func,
         action: PropTypes.oneOf(['CREATE', 'EDIT', 'DETAIL', 'DELETE']).isRequired,
     }
-
 
     resetForm() {
         this.setState({
@@ -51,6 +51,7 @@ class Modal extends Component {
             enviarMail: false,
             errors: [],
         });
+        this.descripcionRef.current.value = '';
     }
 
     getData() {
@@ -58,11 +59,16 @@ class Modal extends Component {
         const { precioUnitario, postVariables, enviarMail } = this.state;
         let data = {};
         postVariables.forEach(x => {
-            data[x] = this.state[x];
+            if( x == 'descripcion'){
+                data[x] = this.descripcionRef.current.value;
+            } else {
+                data[x] = this.state[x];
+            }            
         });
         if ((action==='CREATE') && (enviarMail==true)){
             data['enviarMail'] = true;
         }
+        console.log(data)
         return data;
     }
 
@@ -86,14 +92,12 @@ class Modal extends Component {
         });
     }
 
-    onChangeField(field, value) {
-        this.setState(prevState => {
-            let errors = prevState.errors;
-            if (errors) errors[field] = null;
-            prevState.errors = errors;
-            prevState[field] = value;
-            return prevState;
-        });
+    onChangeField(field, value) {       
+        this.setState(prevState => ({
+            ...prevState,
+            [field]: value, // Actualiza solo el campo que cambia
+            errors: { ...prevState.errors, [field]: null }, // Limpia el error del campo
+        }));
     }
 
     getError(field) {
@@ -166,6 +170,11 @@ class Modal extends Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        // Actualiza solo si cambian campos relevantes
+        return nextState.descripcion !== this.state.descripcion || nextState.errors !== this.state.errors;
+    }
+    
     onOpen = () => {
         const { action } = this.props;
         let iduser = parseInt(localStorage.iduser);
@@ -212,6 +221,7 @@ class Modal extends Component {
 
                 escClose={true}
             >
+
 
                 <ParadigmaLabeledInput 
                     disabled={vars.disabled}
@@ -311,17 +321,24 @@ class Modal extends Component {
                     error={() => this.getError('encomiendaProfesional_id')}
                 />
 
-                <ParadigmaLabeledInput
-                    disabled={vars.disabled}
-                    md={[3, 9]}
-                    type={'textarea'}
-                    classNames={['', 'ta_m_movil']}
-                    label={"Descripción"}
-                    value={descripcion}
-                    onChange={(e) => this.onChangeField('descripcion', e.target.value)}
-                    error={() => this.getError('descripcion')}
-                />
+                <FormGroup className="ta_m_movil md-3" >
+                    <Label for="descripcion">Descripción</Label>
+                    <Input
+                        id="descripcion"
+                        type="textarea"
+                        defaultValue={descripcion}
+                        className="ta_m_movil"
+                        innerRef={(element) => {
+                            this.descripcionRef.current = element;
+                        }}
+                        
+                    />
+                    {this.getError('descripcion') && (
+                        <FormFeedback className= "d-block">Descripción no debe ser vacia</FormFeedback>
+                    )}
+                </FormGroup>
 
+                 
                 {(action==='CREATE' && filtroDest===2) &&
                 <Row className={"mt-sm-1 row"}>
                     <Col className={"col-0 col-md-3"}>
@@ -331,6 +348,7 @@ class Modal extends Component {
                         <label className="ml-2" htmlFor="enviarMail">Enviar Mail</label>
                     </Col>
                 </Row>}
+            
             </ParadigmaModal>
         );
     }

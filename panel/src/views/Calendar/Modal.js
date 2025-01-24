@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ParadigmaModal from "../../components/ParadigmaModal/ParadigmaModal.js"
 import api from "../../api";
 
-import { Row, Col, Label, ButtonGroup, Button, Input, UncontrolledTooltip } from 'reactstrap';
+import { Row, Col, Label, ButtonGroup, Button, Input, UncontrolledTooltip, FormFeedback } from 'reactstrap';
 
 import ParadigmaAsyncSeeker from "../../components/ParadigmaAsyncSeeker/ParadigmaAsyncSeeker.js"
 import ParadigmaLabeledInput from "../../components/ParadigmaLabeledInput/ParadigmaLabeledInput.js"
@@ -33,6 +33,8 @@ class Modal extends Component {
             postVariables: ['nombre', 'tipoEvento_id', 'comienzo', 'fin', 'descripcion', 'visible', 'usuario', 'comitentes', 'encomiendaProfesional_id'],
             errors: [],
         };
+        this.descripcionRef = React.createRef();
+        this.nombreRef = React.createRef();
     }
     
     static propTypes = {
@@ -58,6 +60,8 @@ class Modal extends Component {
 
             errors: [],
         });
+        this.descripcionRef.current.value = '';
+        this.nombreRef.current.value = '';
     }
 
     getData() {
@@ -67,6 +71,8 @@ class Modal extends Component {
         postVariables.forEach(x => {
             data[x] = this.state[x];
         });
+        data['descripcion'] = this.descripcionRef.current.value;
+        data['nombre'] = this.nombreRef.current.value;
 
         data['comienzo'] = this.state.comienzo.format('YYYY-MM-DD HH:mm');
 
@@ -80,7 +86,6 @@ class Modal extends Component {
             // data['usuario_id'] = null;
             data['usuario'] = [];
         }
-
         return data;
     }
 
@@ -108,15 +113,7 @@ class Modal extends Component {
         });
     }
 
-   /*  componentDidUpdate(prevProps, prevState) {
-        if (this.inputRef.current && prevState.nombre !== this.state.nombre) {
-            this.inputRef.current.focus();
-        }
-    } */
-
     onChangeField(field, value) {
-        console.log(field)
-        console.log(value)
         this.setState(prevState => {
             let errors = prevState.errors;
             if (errors) errors[field] = null;
@@ -131,7 +128,6 @@ class Modal extends Component {
             }
             return prevState;
         });
-        console.log(this.state)
     }
 
     getError(field) {
@@ -144,10 +140,11 @@ class Modal extends Component {
         const { nombre, tipoEvento_id, comienzo, fin, visible, usuario, entreFechas } = this.state;
         let error = {};
         let validate = true;
-        if (nombre==''){
+        if (this.nombreRef.current.value ==''){
             error.nombre= [{code: "required", detail: "Nombre no puede estar en blanco"}];
             validate = false;
         }
+
         if(tipoEvento_id==null){
             error.tipoEvento_id= [{code: "required", detail: "Seleccione un tipo de evento"}]
             validate = false;
@@ -312,15 +309,24 @@ class Modal extends Component {
 
                 <Col xs={12} className="col-separator py-1 mr-md-1">Detalle del evento</Col>
 
-                <ParadigmaLabeledInput
-                    label="Nombre"
-                    md={[3, 9]}
-                    value={this.state.nombre}
-                    disabled={vars.disabled}
-                    onChange={(e) => this.onChangeField('nombre', e.target.value)}
-                    error={() => this.getError('nombre')}
-                    maxLength={100}
-                />
+                <Row className="mt-sm-1">
+                    <Col  xs={3} sm={3} md={3} lg={3} xl={3}>
+                        <Label>Nombre</Label>
+                    </Col>
+                    <Col  xs={9} sm={9} md={9} lg={9} xl={9}>
+                         <Input
+                            id="nombre"
+                            type="text"
+                            defaultValue={nombre}                            
+                            innerRef={(element) => {
+                                this.nombreRef.current = element;
+                            }}                            
+                        />
+                       {this.getError('nombre') && (
+                            <FormFeedback className= "d-block">Nombre no debe ser vacia</FormFeedback>
+                        )}
+                    </Col>
+                </Row>
 
                 <ParadigmaLabeledInput
                     label="Tipo de Evento"
@@ -384,20 +390,26 @@ class Modal extends Component {
                     error={() => this.getError('fin')}
                 />)}
 
-                <ParadigmaLabeledInput
-                    label="Descripción"
-                    md={[3, 9]}
-                    inputComponent={
-                        <textarea
-                            className="form-control"
-                            disabled={vars.disabled}
-                            value={this.state.descripcion}
-                            onChange={(e) => this.onChangeField('descripcion', e.target.value)}
+                <Row className="mt-sm-1">
+                    <Col  xs={3} sm={3} md={3} lg={3} xl={3}>
+                        <Label>Descripción</Label>
+                    </Col>
+                    <Col  xs={9} sm={9} md={9} lg={9} xl={9}>
+                         <Input
+                            id="descripción"
+                            type="textarea"
+                            defaultValue={descripcion}           
+                            className='form-control'                 
+                            innerRef={(element) => {
+                                this.descripcionRef.current = element;
+                            }}
                             style={{ height: 50 }}
-                        ></textarea>
-                    }
-                    error={() => this.getError('descripcion')}
-                />
+                        />
+                       {this.getError('descripcion') && (
+                            <FormFeedback className= "d-block">Descripción no debe ser vacia</FormFeedback>
+                        )}
+                    </Col>
+                </Row>
 
                 <ParadigmaLabeledInput
                     label="Encomienda"
