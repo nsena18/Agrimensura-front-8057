@@ -310,10 +310,10 @@ class Modal extends Component {
                 <Col xs={12} className="col-separator py-1 mr-md-1">Detalle del evento</Col>
 
                 <Row className="mt-sm-1">
-                    <Col  xs={3} sm={3} md={3} lg={3} xl={3}>
+                    <Col  xs={12} sm={12} md={3} lg={3} xl={3}>
                         <Label>Nombre</Label>
                     </Col>
-                    <Col  xs={9} sm={9} md={9} lg={9} xl={9}>
+                    <Col  xs={12} sm={12} md={9} lg={9} xl={9}>
                          <Input
                             id="nombre"
                             type="text"
@@ -391,10 +391,10 @@ class Modal extends Component {
                 />)}
 
                 <Row className="mt-sm-1">
-                    <Col  xs={3} sm={3} md={3} lg={3} xl={3}>
+                    <Col  xs={12} sm={12} md={3} lg={3} xl={3}>
                         <Label>Descripción</Label>
                     </Col>
-                    <Col  xs={9} sm={9} md={9} lg={9} xl={9}>
+                    <Col  xs={12} sm={12} md={9} lg={9} xl={9}>
                          <Input
                             id="descripción"
                             type="textarea"

@@ -27,56 +27,57 @@ class ParadigmaEditor extends Component {
                 [{ align: [] }],
                 ['clean'],
                 ['link'],
-              ],
-          /* handlers: {
-            image: () => this.handleImageUpload(), // Manejo personalizado del botón de imagen
-          }, */
+              ],         
         },
       });
 
-      this.quill.getModule("toolbar").addHandler("image", () => {
-        if (!this.quill) {
-          console.error("Quill no está inicializado.");
-          return;
-        }
-      
-        // Abre el cuadro de diálogo de carga de imágenes
-        const input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
-      
-        input.addEventListener("change", async () => {
-          const file = input.files[0];
-          if (file) {
-            const formData = new FormData();
-            formData.append('image', file);
-            
-            try {
-              // Asegúrate de cambiar la URL por tu servidor
-              const response = await fetch( this.props.urlImage , {
-                method: 'POST',
-                body: formData,
-                ...auth.header()
-              });
-
-              const result = await response.json();
-              console.log(result)
-              if (result) {
-                const imageUrl = result.data; 
-                const range = this.quill.getSelection();
-                this.quill.insertEmbed(range.index, 'image', imageUrl);
-              } else {
-                console.error('Error al subir la imagen:', result.error);
+      if(this.quill) {
+        let toolbar = this.quill.getModule("toolbar");
+        if (toolbar) {
+            toolbar.addHandler("image", () => {
+              if (!this.quill) {
+                console.error("Quill no está inicializado.");
+                return;
               }
-            } catch (error) {
-              console.error('Error al subir la imagen:', error);
-            }
-          }
-        });
-        
-        input.click();
-      });
+              const input = document.createElement("input");
+              input.setAttribute("type", "file");
+              input.setAttribute("accept", "image/*");
+            
+              input.addEventListener("change", async () => {
+                const file = input.files[0];
+                if (file) {
+                  const formData = new FormData();
+                  formData.append('image', file);
+                  
+                  try {
+                    // Asegúrate de cambiar la URL por tu servidor
+                    const response = await fetch( this.props.urlImage , {
+                      method: 'POST',
+                      body: formData,
+                      ...auth.header()
+                    });
       
+                    const result = await response.json();
+                    console.log(result)
+                    if (result) {
+                      const imageUrl = result.data; 
+                      const range = this.quill.getSelection();
+                      this.quill.insertEmbed(range.index, 'image', imageUrl);
+                    } else {
+                      console.error('Error al subir la imagen:', result.error);
+                    }
+                  } catch (error) {
+                    console.error('Error al subir la imagen:', error);
+                  }
+                }
+              });
+              
+              input.click();
+            });
+        } else {
+            console.error("El módulo 'toolbar' no está disponible en Quill.");
+        }       
+      }      
 
       if (this.props.value) {
         this.quill.clipboard.dangerouslyPasteHTML(this.props.value);
@@ -91,41 +92,6 @@ class ParadigmaEditor extends Component {
   }
 
   handleImageUpload() {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-
-    input.onchange = async () => {
-      const file = input.files[0];
-      if (file) {
-        // Aquí subes la imagen al servidor
-        const formData = new FormData();
-        formData.append('image', file);
-        
-        try {
-          // Asegúrate de cambiar la URL por tu servidor
-          const response = await fetch('URL_DE_TU_SERVIDOR/api/upload', {
-            method: 'POST',
-            body: formData,
-          });
-
-          const result = await response.json();
-          if (result.success) {
-            const imageUrl = result.url; // URL de la imagen devuelta por el servidor
-
-            // Inserta la imagen en el editor
-            const range = this.quill.getSelection();
-            this.quill.insertEmbed(range.index, 'image', imageUrl);
-          } else {
-            console.error('Error al subir la imagen:', result.error);
-          }
-        } catch (error) {
-          console.error('Error al subir la imagen:', error);
-        }
-      }
-    };
-
-    input.click(); // Simula el clic para abrir el selector de archivos
   }
 
   componentDidUpdate(prevProps) {
