@@ -37,6 +37,8 @@ class ModalCobros extends Component {
             alertMsj: '',
             loading: false,
         };
+        this.importeRef = React.createRef();
+        this.detalleRef = React.createRef();
     }
 
     static propTypes = {
@@ -63,6 +65,8 @@ class ModalCobros extends Component {
             alertMsj: '',
             loading: false,
         });
+        this.importeRef.current.value = '';
+        this.detalleRef.current.value = '';
     }
 
     getData() {
@@ -70,17 +74,26 @@ class ModalCobros extends Component {
         const { postVariables, fecha, importe, aplicacionesEncomienda } = this.state;
         let data = {};
         postVariables.forEach(x => {
-            data[x] = this.state[x];
+            if( x == 'importe'){
+                data[x] = this.importeRef.current.value;
+            }
+            if( x == 'detalle'){
+                data[x] = this.detalleRef.current.value;
+            }
+             else {
+                data[x] = this.state[x];
+            }
         });
         data.fecha = fecha.format('YYYY-MM-DDThh:mm');
-        data.importe = parseFloat(importe.replace(',', '.'));
+        data.importe = parseFloat(this.importeRef.current.value.replace(',', '.'));
 
         // Si hay aplicaciones seleccionadas se agregan al data
         if(aplicacionesEncomienda.filter(e => e.isChecked==true).length>0){
-            data['aplicacionesEncomienda'] = aplicacionesEncomienda.filter(e => e.isChecked==true).map(d => {return {
-                                                                                                                    encomiendaProfesional_id: d.encomiendaProfesional.id,
-                                                                                                                    importe: parseFloat(d.importe.replace(',', '.'))
-                                                                                                                    }})
+            data['aplicacionesEncomienda'] = aplicacionesEncomienda.filter(e => e.isChecked==true).map(d => 
+                {return {
+                encomiendaProfesional_id: d.encomiendaProfesional.id,
+                importe: parseFloat(d.importe.replace(',', '.'))
+                }})
         }
 
         return data;
@@ -181,9 +194,9 @@ class ModalCobros extends Component {
     }
 
     onValidation = () => {
-        const { importe, saldoCtaCte, aplicacionesEncomienda, comitente_id } = this.state;
+        const {  saldoCtaCte, aplicacionesEncomienda, comitente_id } = this.state;
         const redImpAplicado = (accumulator, currentValue) => accumulator + parseFloat(currentValue.importe.replace(',', '.'));
-
+        let importe = this.importeRef.current.value;
         let errors = {};
         let valid = true;
 
@@ -229,7 +242,8 @@ class ModalCobros extends Component {
     // Invierte el check de la fila seleccionada (Encomiendas). Si se cambia a false, se asigna importe 0, 
     // si se cambia a true se asigna el mayor importe posible ((importe cobro + importe Cta Cte) - suma de aplicados)
     aplicarCheck = (i) => {
-        const { saldoCtaCte, importe } = this.state;
+        const { saldoCtaCte } = this.state;
+        let importe = this.importeRef.current.value;
         let aplicacionesEncomienda = this.state.aplicacionesEncomienda;
         const redImpAplicado = (accumulator, currentValue) => accumulator + parseFloat(currentValue.importe.replace(',', '.'));
         
@@ -307,22 +321,25 @@ class ModalCobros extends Component {
                     </Col>
 
                     <Col className="col-12">
-                        <ParadigmaLabeledInput
-                            md={[4, 8]}
-                            label={"Importe"}
-                            error={() => this.getError('importe')}
-                            inputComponent={
-                                <ParadigmaCurrencyInput 
-                                    type="text"
-                                    disabled={vars.disabled}
-                                    value={importe}
-                                    onChange={(data) => this.onChangeField('importe', data)}
-                                    className={'montoCobros'}
-                                    dobleSimboloDecimal={true}
-                                    selectOnFocus={true}
-                                    onBlurComplete={true}
-                                />}
-                        />
+                        <Row className="mt-sm-1">
+                            <Col  xs={12} sm={12} md={4} lg={4} xl={4}>
+                                <Label>Importe</Label>
+                            </Col>
+                            <Col  xs={12} sm={12} md={8} lg={8} xl={8}>
+                                    <Input
+                                    id="importe"
+                                    type="number"
+                                    className="montoCobros"
+                                    defaultValue={importe}                            
+                                    innerRef={(element) => {
+                                        this.importeRef.current = element;
+                                    }}                            
+                                />
+                                {this.getError('importe') && (
+                                    <FormFeedback className= "d-block">Importe no debe ser vacia</FormFeedback>
+                                )}
+                            </Col>
+                        </Row>
                     </Col>
 
                     <Col className="col-12">
@@ -370,17 +387,27 @@ class ModalCobros extends Component {
                         />
                     </Col>
 
-                    <Col className="col-12">
-                        <ParadigmaLabeledInput
-                            disabled={vars.disabled}
-                            md={[4, 8]}
-                            type={'textarea'}
-                            classNames={['', 'ta_m_movil']}
-                            label={"Detalle"}
-                            value={detalle}
-                            onChange={(e) => this.onChangeField('detalle', e.target.value)}
-                            error={() => this.getError('detalle')}
-                        />
+                    <Col className="col-12">                        
+                        <Row className="mt-sm-1">
+                            <Col  xs={12} sm={12} md={4} lg={4} xl={4}>
+                                <Label>Detalle</Label>
+                            </Col>
+                            <Col  xs={12} sm={12} md={8} lg={8} xl={8}>
+                                    <Input
+                                    id="detalle"
+                                    name="text"
+                                    className={['', 'ta_m_movil']}
+                                        type="textarea"
+                                    defaultValue={detalle}
+                                    innerRef={(element) => {
+                                        this.detalleRef.current = element;
+                                    }}
+                                />
+                                {this.getError('detalle') && (
+                                    <FormFeedback className= "d-block">Detalle no debe ser vacia</FormFeedback>
+                                )}
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
                 </Col>
