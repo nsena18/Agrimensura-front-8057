@@ -65,8 +65,8 @@ class ModalCobros extends Component {
             alertMsj: '',
             loading: false,
         });
-        this.importeRef.current.value = '';
-        this.detalleRef.current.value = '';
+        this.importeRef.current = '';
+        this.detalleRef.current = '';
     }
 
     getData() {

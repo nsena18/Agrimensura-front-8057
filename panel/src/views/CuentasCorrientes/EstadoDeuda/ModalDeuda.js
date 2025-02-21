@@ -52,8 +52,8 @@ class ModalDeuda extends Component {
             tipo: 1,
             errors: [],
         });
-        this.importeRef.current.value = '';
-        this.detalleRef.current.value = '';
+        this.importeRef.current = '';
+        this.detalleRef.current = '';
     }
 
     getData() {
