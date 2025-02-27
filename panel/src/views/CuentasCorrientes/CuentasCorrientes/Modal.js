@@ -31,6 +31,8 @@ class Modal extends Component {
             postVariables: ['comitente_id', 'encomiendaProfesional_id', 'detalle', 'tipo', 'medioDePago_id'],
             errors: [],
         };
+        this.importeRef = React.createRef();
+        this.detalleRef = React.createRef();
     }
 
     static propTypes = {
@@ -52,6 +54,8 @@ class Modal extends Component {
             tipo: 0,
             errors: [],
         });
+        this.importeRef.current = '';
+        this.detalleRef.current = '';
     }
 
     getData() {
@@ -59,10 +63,18 @@ class Modal extends Component {
         const { postVariables, fecha, importe } = this.state;
         let data = {};
         postVariables.forEach(x => {
-            data[x] = this.state[x];
+            if( x == 'importe'){
+                data[x] = this.importeRef.current.value;
+            }
+            if( x == 'detalle'){
+                data[x] = this.detalleRef.current.value;
+            }
+             else {
+                data[x] = this.state[x];
+            }
         });
         data.fecha = fecha.format('YYYY-MM-DDThh:mm');
-        data.importe = parseFloat(importe.replace(',', '.'));
+        data.importe = parseFloat(this.importeRef.current.value.replace(',', '.'));
         return data;
     }
 
@@ -181,7 +193,7 @@ class Modal extends Component {
         let error = {};
         let validate = true;
 
-        if (parseFloat(importe.replace(',', '.'))<=0){
+        if (parseFloat(this.importeRef.current.value.replace(',', '.'))<=0){
             error.importe= [{code: "required", detail: "Ingrese un importe valido"}];
             validate = false;
         }
@@ -283,22 +295,27 @@ class Modal extends Component {
                     error={() => this.getError('tipo')}
                 />
 
-                <ParadigmaLabeledInput
-                    md={[4, 8]}
-                    label={"Importe"}
-                    error={() => this.getError('importe')}
-                    inputComponent={
-                        <ParadigmaCurrencyInput 
-                            type="text"
-                            disabled={vars.disabled}
-                            value={importe}
-                            onChange={(data) => this.onChangeField('importe', data)}
-                            className={'monto'}
-                            dobleSimboloDecimal={true}
-                            selectOnFocus={true}
-                            onBlurComplete={true}
-                        />}
-                />
+                
+                <Row className="mt-sm-1">
+                    <Col  xs={12} sm={12} md={4} lg={4} xl={4}>
+                        <Label>Importe</Label>
+                    </Col>
+                    <Col  xs={12} sm={12} md={8} lg={8} xl={8}>
+                         <Input
+                            id="importe"
+                            type="number"
+                            placeholder="0.00"
+                            className="monto"
+                            defaultValue={importe}                            
+                            innerRef={(element) => {
+                                this.importeRef.current = element;
+                            }}                            
+                        />
+                       {this.getError('importe') && (
+                            <FormFeedback className= "d-block">Importe no debe ser vacia</FormFeedback>
+                        )}
+                    </Col>
+                </Row>
 
                 <ParadigmaLabeledInput
                     md={[4, 8]}
@@ -317,16 +334,25 @@ class Modal extends Component {
                         />}
                 />
 
-                <ParadigmaLabeledInput
-                    disabled={vars.disabled}
-                    md={[4, 8]}
-                    type={'textarea'}
-                    classNames={['', 'ta_m_movil']}
-                    label={"Detalle"}
-                    value={detalle}
-                    onChange={(e) => this.onChangeField('detalle', e.target.value)}
-                    error={() => this.getError('detalle')}
-                />
+                <Row className="mt-sm-1">
+                    <Col  xs={12} sm={12} md={4} lg={4} xl={4}>
+                        <Label>Detalle</Label>
+                    </Col>
+                    <Col  xs={12} sm={12} md={8} lg={8} xl={8}>
+                         <Input
+                            id="detalle"
+                            name="text"
+                             type="textarea"
+                            defaultValue={detalle}
+                            innerRef={(element) => {
+                                this.detalleRef.current = element;
+                            }}
+                        />
+                       {this.getError('detalle') && (
+                            <FormFeedback className= "d-block">Detalle no debe ser vacia</FormFeedback>
+                        )}
+                    </Col>
+                </Row>
 
             </ParadigmaModal>
         );
