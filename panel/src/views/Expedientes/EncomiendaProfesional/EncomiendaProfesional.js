@@ -29,7 +29,7 @@ class EncomiendaProfesional extends Component {
                     id: "id",
                     accessor: "id",
                     width: 100,
-                    show: false,
+                    show: true,
                     private: true,
                 },
                 {
@@ -249,8 +249,6 @@ class EncomiendaProfesional extends Component {
     componentDidMount = () => {
         // Cargo los estados de la encomienda con sus respectivos colores
         apiFunctions.get(api.expedientes.estadosencomiendaSelect, null, null, {sort:['numero']}, (response) => {
-            console.log('data')
-            console.log(response)
             this.setState({
                 ar_estados: response.data.map((d) => { return {id: d.numero.toString(), 
                                                                 nombre: d.nombre, 

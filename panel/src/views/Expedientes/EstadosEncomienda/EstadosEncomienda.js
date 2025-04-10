@@ -28,7 +28,7 @@ class Canales extends Component {
                     show: true,
                 },
                 {
-                    Header: "Nombre",
+                    Header: "Nombre de Etapa",
                     id: "nombre",
                     accessor: "nombre",
                     show: true,
@@ -86,11 +86,11 @@ class Canales extends Component {
         return (
             <ParadigmaTable
                 buttons={[
-                    {
+                   /*  {
                         create: true,
                         component: (props) => <Modal {...props} action="CREATE" />,
-                        permission: 'superadmin',
-                    },
+                        permission: 'estadosencomienda_edit',
+                    }, */
                     {
                         edit: true,
                         component: (props) => <Modal {...props} action="EDIT" />,
@@ -115,7 +115,7 @@ class Canales extends Component {
                 apiUrl={api.expedientes.estadosencomienda}
                 columns={this.state.columns}
                 /* exportUrl={api.expedientes.estadosencomienda} */
-                title={"Estados Encomienda"}
+                title={"Etapas de Encomienda"}
             />
         );
     }

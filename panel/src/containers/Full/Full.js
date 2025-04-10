@@ -42,6 +42,12 @@ import EstadoDeuda from '../../views/CuentasCorrientes/EstadoDeuda/EstadoDeuda.j
 import CobrosDeudas from '../../views/CuentasCorrientes/CobrosDeudas/CobrosDeudas.js'
 import MediosDePago from '../../views/CuentasCorrientes/MediosDePago/MediosDePago.js'
 
+import VisacionesPlantillas from '../../views/Visaciones/Plantillas/Visaciones.js';
+import Visaciones from '../../views/Visaciones/Visar/Visaciones.js';
+
+import EstadosVisaciones from '../../views/Expedientes/Visaciones/EstadoVisaciones.js';
+import VisacionesEncomieda from '../../views/Expedientes/VisacionesEncomienda/VisacionesEncomienda.js';
+
 import IdleTimer from 'react-idle-timer';
 
 import auth from '../../auth/auth';
@@ -107,7 +113,7 @@ class Full extends Component {
                   
                   <Route path="/encomiendaprofesional" name="EncomiendaProfesional" component={EncomiendaProfesional} />
 
-                  <Route path="/historialencomienda" name="HistorialEncomienda" component={HistorialEncomienda} />
+                  <Route path="/visaciones" name="Visaciones Encomienda" component={VisacionesEncomieda} />
 
                   <Route path="/mails/casillas" name="Casillas" component={Casillas} />
                   <Route path="/mails/plantillas" name="Plantillas" component={Plantillas} />
@@ -116,6 +122,12 @@ class Full extends Component {
                   <Route path="/ctacte/estadodeuda" name="EstadoDeuda" component={EstadoDeuda} />
                   <Route path="/ctacte/cobrosdeudas" name="CobrosDeudas" component={CobrosDeudas} />
                   <Route path="/ctacte/mediosdepago" name="MediosDePago" component={MediosDePago} />
+
+                  <Route path="/visaciones/plantillas" name="PlantillaVisaciones" component={VisacionesPlantillas} />
+                  <Route path="/visaciones/gestion" name="Visaciones" component={Visaciones} />
+
+                  <Route path="/estadosvisaciones" name="EstadosVisaciones" component={EstadosVisaciones} />
+                  
                   
                   <Redirect from="/" to="/dashboard" />
                 </Switch>

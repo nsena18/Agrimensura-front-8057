@@ -19,6 +19,7 @@ import ParadigmaLabeledInput from "../../../components/ParadigmaLabeledInput/Par
 import ParadigmaDatePicker from "../../../components/ParadigmaDatePicker/ParadigmaDatePicker.js"
 
 import TableArchivos from "./TableArchivos.js"
+import TableVisaciones from './TableVisaciones.js';
 
 class Modal extends Component {
     constructor(props) {
@@ -93,6 +94,7 @@ class Modal extends Component {
             objetoEncomienda: null,
             diasEstimadosEncomienda: [], //Dias estimados para cada estado
             nota_ep: [],
+            listVisaciones: [],
         };
     }
 
@@ -169,11 +171,12 @@ class Modal extends Component {
             objetoEncomienda: null,
             diasEstimadosEncomienda: [],
             nota_ep: [],
+            listVisaciones: [],
         });
     }
 
     getData() {
-        const { action, ar_estados } = this.props;
+        const { action, ar_estados } = this.props;       
         const { precioUnitario, postVariables, fechaIngreso, circunscripcion, sector, fraccion, quinta, macizo, 
                 manzana, lote, parcela, estadoLote_id, situacionLote_id, estado, documentosEncomiendas, diasEstimadosEncomienda } = this.state;
         let data = {};
@@ -182,30 +185,28 @@ class Modal extends Component {
         });
         data['fechaIngreso'] = fechaIngreso.format('YYYY-MM-DDThh:mm')
 
+
         // Capturo el primer estado de la lista de estados (primerEstado)
         let primerEstado = (ar_estados && ar_estados.filter((f) => f.primerEstado).length>0) ? (ar_estados.filter((f) => f.primerEstado)[0]) : (null)
 
         // Si los datos de nomenclatura no estan completos se asigna el primer estado (creado) sino el siguiente (datos completados) 
-        if((ar_estados && ar_estados.filter((f) => f.id==estado).length>0 && ar_estados.filter((f) => f.id==estado)[0].editarEncomienda==true)){
+       /*  if((ar_estados && ar_estados.filter((f) => f.id==estado).length>0 && ar_estados.filter((f) => f.id==estado)[0].editarEncomienda==true)){
             if(circunscripcion!='' && sector!='' && fraccion!='' && quinta!='' && macizo!='' && manzana!='' && lote!='' && parcela!='' && estadoLote_id!=null && situacionLote_id!=null){
                 data['estado'] = (primerEstado.proximosEstado.length>0) ? (primerEstado.proximosEstado[0].numero) : (primerEstado.id)
             }else{
                 data['estado'] = primerEstado.id
             }
-        }
-
+        } */
         data.documentos = documentosEncomiendas.map(p => p.id ? { id: p.id } : { archivo: p.archivo });
 
         if(action==='CREATE' && diasEstimadosEncomienda.length>0){
             data.diasEstimadosEncomienda = diasEstimadosEncomienda;
         }
-        
         return data;
     }
 
     setData(data) {
         const { action, ar_estados } = this.props;
-        
         if (data.success) {
             // Si el estado no puede editar encomienda devuelve mensaje de error
             if((action!='DETAIL') && (ar_estados.filter((f) => f.id==data.estado).length>0 && ar_estados.filter((f) => f.id==data.estado)[0].editarEncomienda==false)){
@@ -214,7 +215,7 @@ class Modal extends Component {
                     message: 'No se puede editar la encomienda',
                 }
             }
-            
+
             this.setState({
                 id: data.id,
                 estado: data.estado,
@@ -270,6 +271,17 @@ class Modal extends Component {
 
                 importePresupuesto: (data.importePresupuesto) ? (data.importePresupuesto.toString().replace('.',',')) : ('0,00'),
             });
+
+            if( action != 'CREATE' ) {
+                apiFunctions.get(api.visaciones.listadovisacionesencomiendas, data.id, null, null, (response) => {
+                    console.log('response visaciones')
+                    console.log(response)
+                    this.setState({
+                        listVisaciones: response.data
+                    })
+                });
+            }
+           
         }
     }
 
@@ -448,7 +460,8 @@ class Modal extends Component {
                 sector, fraccion, quinta, macizo, manzana, lote, parcela, estadoLote_id, situacionLote_id, escritura, cpia, observaciones,
                 entregado, telefono, telefono2, telefono3, contacto, sufijoOrden,
                 calle, numero, codigoPostal, superficieInmuebles, cantidadUnidades, archivoAdjunto, descargaArchivo,
-                cambiosDeEstado, objetoEncomienda, documentosEncomiendas, eventosCalendar, observacionComitente, diasEstimadosEncomienda, nota_ep, importePresupuesto } = this.state;
+                cambiosDeEstado, objetoEncomienda, documentosEncomiendas, eventosCalendar, observacionComitente, diasEstimadosEncomienda, 
+                nota_ep, importePresupuesto, listVisaciones } = this.state;
         
         let idPresupuesto = null;
         for (let i = cambiosDeEstado.length-1; i >= 0; i--) {
@@ -546,6 +559,14 @@ class Modal extends Component {
                                 onClick={() => { this.setState({ activeTab: 7 }) }}
                             >Días Estados</NavLink>
                         </NavItem>}
+                    {(action!='CREATE' ) &&
+                        <NavItem>
+                            <NavLink
+                                className={(this.state.activeTab == 9 ? "active" : "")}
+                                onClick={() => { this.setState({ activeTab: 9 }) }}
+                            >Visaciones</NavLink>
+                        </NavItem>}
+
                 </Nav>
 
                 <TabContent
@@ -1312,6 +1333,44 @@ class Modal extends Component {
                             </Row>
                         )}
 
+                    </TabPane>}
+
+                    { (action!='CREATE') &&
+                    <TabPane tabId={9} className="py-1">
+                         {listVisaciones.map((dataestado, i) => 
+                            <div key={`visacion-${i}`}>
+                            <div className="d-flex my-3">
+                            <div style={{ minWidth: 120 }}>                                    
+                                    {moment(dataestado.created_at).format('DD/MM/YYYY')}
+                                </div>
+                                <div className="text-center px-2">
+                                    {
+                                        <div
+                                            className="historial__icon bg-success rounded-circle d-flex justify-content-center align-items-center"
+                                            style={{ width: 25, height: 25 }}
+                                        >
+                                            <i className="fa fa-arrow-right"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div className="flex-grow-1">
+                                    <strong>{dataestado.estadosplantillas.nombre}</strong><br/>
+                                    <div 
+                                        className={
+                                            'badge ' + 
+                                            (dataestado.estado === 'Definitiva' 
+                                              ? 'badge-primary' 
+                                              : dataestado.estado === 'Observada' 
+                                                ? 'badge-success' 
+                                                : 'badge-warning')
+                                          }
+                                    >{ dataestado.estado }</div><br/>
+                                    <span><strong>Fecha Estimación: </strong>{dataestado.fechaestimacion}</span><br/>
+                                    <span><strong>Fecha Caducidad: </strong>{dataestado.fechacaducidad}</span><br></br>                                    
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     </TabPane>}
                 </TabContent>
 

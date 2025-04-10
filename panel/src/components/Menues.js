@@ -15,14 +15,32 @@ export default {
 						permission: 'encomiendaprofesional_view'
 					},
 					{
-						name: 'Historial Enc.',
-						url: '/historialencomienda',
+						name: 'Visaciones',
+						url: '/visaciones',
 						// icon: 'fa fa-user',
 						permission: 'encomiendaprofesional_view'
 					},
 					
 				]
 			},
+			/* {
+				name: 'Gestión Visaciones',
+				icon: 'fa fa-id-card',
+				items: [
+					{
+						name: 'Plantillas',
+						url: '/visaciones/plantillas',
+						// icon: 'fa fa-dollar',
+						permission: 'encomiendaprofesional_view'
+					},
+					{
+						name: 'Visaciones',
+						url: '/visaciones/gestion',
+						// icon: 'fa fa-dollar',
+						permission: 'encomiendaprofesional_view'
+					},
+				]
+			}, */
 			{
 				name: 'Cta Cte',
 				icon: 'fa fa-dollar',
@@ -103,8 +121,14 @@ export default {
 								permission: 'situacionlotes_view'
 							},
 							{
-								name: 'Estados Encomienda',
+								name: 'Etapas de Encomienda',
 								url: '/estadosencomienda',
+								// icon: 'fa fa-user',
+								permission: 'estadosencomienda_view'
+							},
+							{
+								name: 'Estados Visaciones',
+								url: '/estadosvisaciones',
 								// icon: 'fa fa-user',
 								permission: 'estadosencomienda_view'
 							},

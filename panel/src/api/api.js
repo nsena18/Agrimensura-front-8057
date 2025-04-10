@@ -31,6 +31,7 @@ module.exports = {
         categorias: BASE_URL + "comitentes/categorias/",
         profesiones: BASE_URL + "comitentes/profesiones/",
         confirmacion: BASE_URL + "comitentes/confirmacion/",
+        entidadesselect: BASE_URL + "comitentes/entidades/listall/",
     },
     geograficas: {
         provincias: BASE_URL + "geograficas/provincias/",
@@ -74,6 +75,15 @@ module.exports = {
         cobroAplicacion: BASE_URL + "cuentascorrientes/cobroaplicacion/",
         totalAplicacionesEIngresos: BASE_URL + "cuentascorrientes/totalaplicacioneseingresos/",
         mediosDePago: BASE_URL + "cuentascorrientes/mediosdepago/",
+    },
+    visaciones: {
+        plantillas: BASE_URL + "visaciones/plantillas/",
+        estados: BASE_URL + "visaciones/estadosplantilla/",
+        estadosSelect: BASE_URL + "visaciones/estadosplantilla/select/",
+        encomienda: BASE_URL + "visaciones/encomienda/",
+        cambioestado: BASE_URL + "visaciones/encomienda/cambioestado/",
+        archivo: BASE_URL + "visaciones/encomiendaprofesional/archivoadjunto/",
+        listadovisacionesencomiendas: BASE_URL + "visaciones/encomienda/profesional/",
     },
     container: BASE_URL + "container/",
 }

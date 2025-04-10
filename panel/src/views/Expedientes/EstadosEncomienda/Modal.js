@@ -174,7 +174,7 @@ class Modal extends Component {
             return {
                 get: false,
                 submitType: "POST",
-                title: "Nuevo Estado",
+                title: "Nueva Etapa",
                 buttonTitle: "Nuevo",
                 danger: false,
                 buttonIcon: "fa fa-plus fa-lg",
@@ -188,7 +188,7 @@ class Modal extends Component {
             return {
                 get: true,
                 submitType: "PUT",
-                title: "Editar Estado",
+                title: "Editar Etapa",
                 buttonTitle: "Editar",
                 danger: false,
                 buttonIcon: "fa fa-pencil fa-lg",
@@ -203,7 +203,7 @@ class Modal extends Component {
             return {
                 get: true,
                 submitType: null,
-                title: "Estado",
+                title: "Etapa",
                 buttonTitle: "Ver",
                 danger: false,
                 buttonIcon: "fa fa-search fa-lg",
@@ -217,7 +217,7 @@ class Modal extends Component {
             return {
                 get: true,
                 submitType: "DELETE",
-                title: "Eliminar Estado",
+                title: "Eliminar Etapa",
                 buttonTitle: "Eliminar",
                 danger: true,
                 buttonIcon: "fa fa-trash fa-lg",
@@ -270,7 +270,7 @@ class Modal extends Component {
                             disabled={vars.disabled}
                             md={[3, 9]}
                             maxLength={50}
-                            label="Nombre"
+                            label="Nombre de evento"
                             value={nombre}
                             onChange={(e) => this.onChangeField('nombre', e.target.value)}
                             error={() => this.getError('nombre')}
