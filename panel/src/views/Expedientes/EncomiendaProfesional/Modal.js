@@ -274,8 +274,6 @@ class Modal extends Component {
 
             if( action != 'CREATE' ) {
                 apiFunctions.get(api.visaciones.listadovisacionesencomiendas, data.id, null, null, (response) => {
-                    console.log('response visaciones')
-                    console.log(response)
                     this.setState({
                         listVisaciones: response.data
                     })

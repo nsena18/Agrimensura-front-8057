@@ -36,10 +36,29 @@ class TableVisaciones extends Component {
                 },
                 {
                     Header: "N° Encomienda",
-                    id: "encomiendaprofesional_id",
-                    accessor: d => (d.encomiendaprofesional.nroOrden),
+                    id: "encomiendaprofesional_nroOrden",
+                    accessor: d => (d.encomiendaprofesional_nroOrden),
                     exportWidth: '8%',
                     show: true,
+                },
+                {
+                    Header: "Comitente",
+                    id: "encomiendaprofesional_comitente_nombre",
+                    accessor: 'encomiendaprofesional_comitente_nombre',
+                    exportWidth: '8%',
+                    show: true,
+                    Filter: ({ filter, onChange }) =>
+                    <ParadigmaAsyncSeeker
+                        url={api.comitentes.comitentes}
+                        value={filter ? filter.value : ""}
+                        onChange={data => (data) ? (onChange(data.apellido_nombre)): ((filter) ? onChange('') : null)}
+                        displayField={"apellido_nombre"}
+                        valueField={'apellido_nombre'}
+                        parameters={{
+                            paginationEnabled:false,
+                            sort:['apellido_nombre'],
+                        }}
+                    />
                 },
                 {
                     Header: "Encomienda",
@@ -50,8 +69,8 @@ class TableVisaciones extends Component {
                 },
                 {
                     Header: "Nombre Visación",
-                    id: "estadosplantillas_id",
-                    accessor: d => (d.estadosplantillas.nombre),
+                    id: "estadosplantillas_nombre",
+                    accessor: d => (d.estadosplantillas_nombre),
                     exportWidth: '8%',
                     show: true,
                 },
@@ -148,8 +167,6 @@ class TableVisaciones extends Component {
         });
 
         apiFunctions.get(api.visaciones.estadosSelect, null, null, null, (response) => {
-            console.log('response')
-            console.log(response)
             this.setState({
                 list_tipovisaciones: response.data
             })

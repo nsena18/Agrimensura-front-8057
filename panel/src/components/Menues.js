@@ -132,6 +132,12 @@ export default {
 								// icon: 'fa fa-user',
 								permission: 'estadosencomienda_view'
 							},
+							{
+								name: 'Grupo de Visaciones',
+								url: '/agrupacionvisaciones',
+								// icon: 'fa fa-user',
+								permission: 'estadosencomienda_view'
+							},
 						]
 					},
 					{

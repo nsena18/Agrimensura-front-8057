@@ -109,7 +109,7 @@ class Estados extends Component {
                     {
                         edit: true,
                         component: (props) => <Modal {...props} action="DELETE" listEntidades={listEntidades}/>,
-                        permission: 'superadmin',
+                        permission: 'estadosencomienda_delete',
                     }
                     // {
                     //     edit: true,

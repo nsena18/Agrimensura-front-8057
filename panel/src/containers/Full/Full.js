@@ -47,6 +47,7 @@ import Visaciones from '../../views/Visaciones/Visar/Visaciones.js';
 
 import EstadosVisaciones from '../../views/Expedientes/Visaciones/EstadoVisaciones.js';
 import VisacionesEncomieda from '../../views/Expedientes/VisacionesEncomienda/VisacionesEncomienda.js';
+import AgrupacionVisaciones from '../../views/Expedientes/VisacionesAgrupacion/VisacionesAgrupacion.js';
 
 import IdleTimer from 'react-idle-timer';
 
@@ -127,6 +128,8 @@ class Full extends Component {
                   <Route path="/visaciones/gestion" name="Visaciones" component={Visaciones} />
 
                   <Route path="/estadosvisaciones" name="EstadosVisaciones" component={EstadosVisaciones} />
+
+                  <Route path="/agrupacionvisaciones" name="AgrupacionVisaciones" component={AgrupacionVisaciones} />
                   
                   
                   <Redirect from="/" to="/dashboard" />

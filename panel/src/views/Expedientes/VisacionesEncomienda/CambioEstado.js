@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import api from "../../../api";
 import { formatCurrency } from '../../../functions/functions';
-
+import apiFunctions from "../../../api/functions.js"
 import { Row, Col, Label, Input, InputGroup, FormFeedback } from 'reactstrap';
 import moment from 'moment';
 
@@ -30,6 +30,9 @@ class Modal extends Component {
             lista_estados: ['Previa', 'Observada', 'Definitiva'],
             tituloModal : '',
             labelarchivo : '',
+            listVisacionesEncomiendaPrevia: [],
+            isGoProcess : true,
+            encomiendaRef: ''
         };
     }
 
@@ -52,6 +55,9 @@ class Modal extends Component {
             lista_estados: ['Previa', 'Observada', 'Definitiva'],
             tituloModal : '',
             labelarchivo : '',
+            listVisacionesEncomiendaPrevia: [],
+            isGoProcess : true,
+            encomiendaRef: ''
         });
     }
 
@@ -79,52 +85,37 @@ class Modal extends Component {
         const { action, ar_estados } = this.props;
         const { lista_estados } = this.state;
         if (data.success) {
-            console.log(data)
             let estado = data.estado;
             let indice = lista_estados.indexOf(estado);
-            console.log(data)
-            console.log('El indice es: ' + indice)
             let filtr =  lista_estados.slice(indice);
-            console.log(filtr)
+            let idEncomiendaPadre = data.encomiendaprofesional.id;
 
             if(action!='DELETE'){
-
-                // Si no se puede avanzar el estado devuelvo mensaje de error (mensajeError)
-                /* if((ar_estados.filter((f) => f.id==data.estado).length>0) && (ar_estados.filter((f) => f.id==data.estado)[0].sePuedeAvanzar==false)){
-                    return {
-                        allowed: false,
-                        message: ar_estados.filter((f) => f.id==data.estado)[0].mensajeError
+                let list_correlativos = data.lista_correlativos == null ? [] : data.lista_correlativos;
+                apiFunctions.get(api.visaciones.listadovisacionesencomiendas , idEncomiendaPadre, null, null, (response) => {
+                    let registros =  response.data
+                    let visacionesFormateada = registros
+                        .filter(registro => registro.id && list_correlativos.includes(registro.id))
+                        .map((e) => ({
+                            id: e.id,
+                            nombre: e.estadosplantillas.nombre,
+                            numero: e.estadosplantillas.numero,
+                            estado: e.estado
+                        }));
+                    if(visacionesFormateada.length > 0) {
+                        let existe = visacionesFormateada.some(e => 
+                            e.estado == 'Previa' || 
+                            e.estado == 'Observada'
+                          );
+                        this.setState({
+                            listVisacionesEncomiendaPrevia:visacionesFormateada,
+                            isGoProcess : !existe,
+                            encomiendaRef: data.encomiendaprofesional.nroOrden
+                        })
                     }
-                }
 
-                // permisos Nivel 1
-                // let estadosNivel1 = [1, 2, 3, 4, 5, 6]
-                let estadosNivel1 = ar_estados.filter((f) => f.permisosNivel1==true).map((e) => {return parseInt(e.id)})
-                let permisosN1=((estadosNivel1.includes(data.estado) && !localStorage.permisos.includes('nivel1')) && !localStorage.permisos.includes('administrador'));
-                if(permisosN1==true){
-                    return {
-                        allowed: false,
-                        message: 'No tienes permisos para avanzar de estado',
-                    }
-                }
-                
-                //permisos Nivel 2
-                // let estadosNivel2 = [1, 2, 3, 4, 5, 6]
-                let estadosNivel2 = ar_estados.filter((f) => f.permisosNivel1==true).map((e) => {return parseInt(e.id)})
-                let permisosN2 = (estadosNivel2.includes(data.estado) && !localStorage.permisos.includes('nivel2') && !localStorage.permisos.includes('administrador'));
-                if(permisosN2==true){
-                    return {
-                        allowed: false,
-                        message: 'No tienes permisos para avanzar de estado',
-                    }
-                } */
-
-            }else{
-               /*  if(ar_estados.find((a) => {return (a.proximosEstado && a.proximosEstado.filter(f => {return f.numero == data.estado}).length>0)})){
-                    let estadoAnt = ar_estados.find((a) => {return (a.proximosEstado && a.proximosEstado.filter(f => {return f.numero == data.estado}).length>0)})
-                    
-                    estadoARetroceder = (!estadoAnt.primerEstado) ? estadoAnt.nombre : '';
-                } */
+                   
+                });
 
             }
             this.setState({
@@ -134,6 +125,8 @@ class Modal extends Component {
                 tituloModal : data.estadosplantillas.titulomodal,
                 labelarchivo : data.estadosplantillas.labelarchivo
             });
+
+
         }
     }
 
@@ -160,7 +153,7 @@ class Modal extends Component {
     }
 
     modalVars() {
-        const { estado, estadoAnterior, estadoARetroceder, lista_estados, tituloModal } = this.state;
+        const { estado, estadoAnterior, estadoARetroceder, lista_estados, tituloModal, isGoProcess } = this.state;
         const { action, ar_estados } = this.props;
         
         if (action == "EDIT") {
@@ -170,10 +163,10 @@ class Modal extends Component {
                 // asigno el titulo del modal dependiendo el estado (tituloModal)
                 title:  tituloModal == '' ? 'Avanzar visación' : tituloModal,
                 buttonTitle: "Avanzar",
-                danger: false,
+                danger: !isGoProcess,
                 buttonIcon: "fa fa-share fa-lg",
                 successMessage: "ha sido editado con éxito.",
-                saveButton: true,
+                saveButton: isGoProcess,
                 saveButtonLabel: "Guardar",
                 buttonClass: "",
                 disabled: false,
@@ -240,8 +233,7 @@ class Modal extends Component {
     render() {
         let vars = this.modalVars();
         const { action, ar_estados } = this.props;
-        const { lista_estados, estadoAnterior, estado, observaciones, archivo, estadoARetroceder, labelarchivo } = this.state;
-       // let obj_estadoAnterior = ar_estados.filter((f) => f.id==estadoAnterior);
+        const { lista_estados, estadoAnterior, estado, observaciones,encomiendaRef, archivo, isGoProcess, labelarchivo, listVisacionesEncomiendaPrevia } = this.state;
 
         return (
             <ParadigmaModal
@@ -276,51 +268,84 @@ class Modal extends Component {
                 fileUploader
                 escClose={true}
             >
-                {action!='DELETE' ?
-                <Fragment>
-                    {/* Si se puede avanzar a mas de un estado, se muestra un asyncseeker para elegir el estado a avanzar */} 
-                    <ParadigmaLabeledInput
-                            label={'Avanzar a'}
+                { (action!='DELETE' && isGoProcess ) ?
+
+                    <Fragment>
+                        {/* Si se puede avanzar a mas de un estado, se muestra un asyncseeker para elegir el estado a avanzar */} 
+                        <ParadigmaLabeledInput
+                                label={'Avanzar a'}
+                                md={[4, 8]}
+                                inputComponent={
+                                    <ParadigmaAsyncSeeker
+                                        url={undefined}
+                                        clearable={false}
+                                        optionDefault={lista_estados.map(e => {return {nombre: e, id: e }})}
+                                        value={estado}
+                                        onChange={e => this.setState({ estado: e.id })}
+                                    />
+                                }
+                                error={() => this.getError('estado')}
+                            />
+
+                        <ParadigmaLabeledInput
+                            // Asigno el label segun el estado (labelArchivo) y si es obligatorio (archivoObligatorio) agrego un *
+                            label={labelarchivo}
                             md={[4, 8]}
                             inputComponent={
-                                <ParadigmaAsyncSeeker
-                                    url={undefined}
-                                    clearable={false}
-                                    optionDefault={lista_estados.map(e => {return {nombre: e, id: e }})}
-                                    value={estado}
-                                    onChange={e => this.setState({ estado: e.id })}
+                                <Input 
+                                    id={'inp_arch'} 
+                                    onChange={e => this.setState({ archivo: e.target.files[0] })} 
+                                    type="file" 
+                                    disabled={vars.disabled} 
                                 />
                             }
-                            error={() => this.getError('estado')}
+                            error={() => this.getError('archivo')}
                         />
-
-                    <ParadigmaLabeledInput
-                        // Asigno el label segun el estado (labelArchivo) y si es obligatorio (archivoObligatorio) agrego un *
-                        label={labelarchivo}
-                        md={[4, 8]}
-                        inputComponent={
-                            <Input 
-                                id={'inp_arch'} 
-                                onChange={e => this.setState({ archivo: e.target.files[0] })} 
-                                type="file" 
-                                disabled={vars.disabled} 
-                            />
-                        }
-                        error={() => this.getError('archivo')}
-                    />
-                    <ParadigmaLabeledInput
-                        md={[4, 8]}
-                        type={'textarea'}
-                        label={"Observaciones"}
-                        classNames={['','ta_m_movil']}
-                        value={observaciones}
-                        maxLength={255}
-                        onChange={(e) => this.onChangeField('observaciones', e.target.value)}
-                        error={() => this.getError('observaciones')}
-                    />
-                </Fragment>
+                        <ParadigmaLabeledInput
+                            md={[4, 8]}
+                            type={'textarea'}
+                            label={"Observaciones"}
+                            classNames={['','ta_m_movil']}
+                            value={observaciones}
+                            maxLength={255}
+                            onChange={(e) => this.onChangeField('observaciones', e.target.value)}
+                            error={() => this.getError('observaciones')}
+                        />
+                    </Fragment>
                 :
-                <h2 className={'text-center'}>{(estado!='Previa') ? 'Retroceder al estado "'+( estado == 'Definitiva' ? 'Observada' : 'Previa'  )+'"' : ('No se puede retroceder la visación')}</h2>}
+
+                   (!isGoProcess) ?
+                   <Fragment>
+                        <h4 className='text-center' >Listado de visaciones</h4><br></br>
+                        <h5 className='text-center' > Encomienda Ref: {encomiendaRef} </h5><br></br>
+                        <strong className={'text-center'}>No se puede completar la operación solicitada. Existen visaciones previas pendientes de finalización en el registro actual.</strong>
+                        <ul className="list-group">
+                         {Array.isArray(listVisacionesEncomiendaPrevia) && listVisacionesEncomiendaPrevia.length > 0 ? (
+                                listVisacionesEncomiendaPrevia.map((data, i) => (
+                                    <li  key={i} className="list-group-item d-flex justify-content-between align-items-center">
+                                        {data.numero} - {data.nombre}
+                                        <span className={
+                                            'badge ' + 
+                                            (data.estado === 'Definitiva' 
+                                              ? 'badge-primary' 
+                                              : 'badge-danger')
+                                          }>{data.estado}</span>
+                                    </li>
+                                ))
+                                ) : (
+                                <div className="text-muted text-center py-3">
+                                    No hay visaciones registradas
+                                </div>
+                            )}                           
+                        </ul>    
+
+                    </Fragment>
+                    :
+                    <h2 className={'text-center'}>{(estado!='Previa') ? 'Retroceder al estado "'+( estado == 'Definitiva' ? 'Observada' : 'Previa'  )+'"' : ('No se puede retroceder la visación')}</h2>
+                    
+                }
+            
+                
 
             </ParadigmaModal>
         );
