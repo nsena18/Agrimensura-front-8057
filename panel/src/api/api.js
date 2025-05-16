@@ -85,6 +85,7 @@ module.exports = {
         archivo: BASE_URL + "visaciones/encomiendaprofesional/archivoadjunto/",
         listadovisacionesencomiendas: BASE_URL + "visaciones/encomienda/profesional/",
         agrupacionvisaciones: BASE_URL + "visaciones/agrupacionplantillas/",
+        listagruposvisaciones: BASE_URL + "visaciones/getallgruposvisaciones/",
     },
     container: BASE_URL + "container/",
 }

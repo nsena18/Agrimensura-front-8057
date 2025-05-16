@@ -155,11 +155,13 @@ class TableVisaciones extends Component {
                     exportWidth: '5%',
                     show: true,
                 },
-            ]
+            ],
+            listaGrupoVisaciones : [],
         };
     }
 
     componentDidMount = () => {
+
         apiFunctions.get(api.expedientes.encomiendaprofesionalSelect, null, null, null, (response) => {
             this.setState({
                 list_encomienda: response.data
@@ -171,12 +173,20 @@ class TableVisaciones extends Component {
                 list_tipovisaciones: response.data
             })
         });
-       
+
+        apiFunctions.get(api.visaciones.listagruposvisaciones, null, null, null, (response) => {
+            console.log(' registros grupos ')
+            console.log(response)
+            this.setState({
+                listaGrupoVisaciones: response.data
+            })
+        });
+
         // api.visaciones.estadosSelect
     }
 
     render() {
-        const { list_encomienda, usuario_id, list_tipovisaciones } = this.state;
+        const { list_encomienda, usuario_id, list_tipovisaciones, listaGrupoVisaciones } = this.state;
         const outerSort = [
         //   {
         //     id: 'nombre',
@@ -189,7 +199,7 @@ class TableVisaciones extends Component {
                 buttons={[
                     {
                         create: true,
-                        component: (props) => <Modal {...props} action="CREATE" list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        component: (props) => <Modal {...props} action="CREATE" listaGrupoVisaciones={listaGrupoVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
                         permission: 'encomiendaprofesional_new',
                     },
                     {

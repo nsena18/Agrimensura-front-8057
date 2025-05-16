@@ -8,7 +8,7 @@ import apiFunctions from "../../../api/functions.js"
 
 import { formatCurrency } from '../../../functions/functions';
 
-import { Row, Col, Label, Input, InputGroup, FormFeedback, TabContent, TabPane, Nav, NavItem, NavLink, Button } from 'reactstrap';
+import { Row, Col, Label, Input, InputGroup, FormFeedback, Form, ListGroup, ListGroupItem,ListGroupItemHeading, ListGroupItemText, TabContent, TabPane, Nav, NavItem, NavLink, Button, FormGroup } from 'reactstrap';
 import moment from 'moment';
 import HistorialItem from '../EncomiendaProfesional/HistorialItem.js';
 import ParadigmaModal from "../../../components/ParadigmaModal/ParadigmaModal.js"
@@ -45,6 +45,9 @@ class Modal extends Component {
             listVisacionesEncomienda:[],
             lista_correlativos : [],
             list_tipovisaciones_local : list_tipovisaciones,
+            opcionSeleccionada : 'Sin pack',
+            idGrupoVisacion : null,
+            listaVisacionesPorGrupo : [],
         };
     }
 
@@ -74,8 +77,8 @@ class Modal extends Component {
     }
 
     getData() {
-        const { action, list_encomienda } = this.props;
-        const { postVariables, fechacaducidad, fechaestimacion } = this.state;
+        const { action, list_encomienda, listaGrupoVisaciones } = this.props;
+        const { postVariables, fechacaducidad, fechaestimacion, idGrupoVisacion, encomiendaprofesional_id, opcionSeleccionada } = this.state;
         let data = {};
         postVariables.forEach(x => {
             data[x] = this.state[x];
@@ -85,6 +88,31 @@ class Modal extends Component {
         }
         data['fechacaducidad'] = fechacaducidad.format('YYYY-MM-DD')
         data['fechaestimacion'] = fechaestimacion.format('YYYY-MM-DD')
+        if(opcionSeleccionada === 'Con pack') {
+            let dataVisaciones = listaGrupoVisaciones.find(x => x.id == idGrupoVisacion);
+            if(dataVisaciones){
+                console.log(dataVisaciones.visaciones)
+                dataVisaciones.visaciones.forEach( (element, index) => {
+                     let data = {
+                        fechacaducidad : moment().add(1, 'days').format('YYYY-MM-DD'),
+                        fechaestimacion : moment().format('YYYY-MM-DD'),
+                        estadosplantillas_id : element.id ,
+                        encomiendaprofesional_id : encomiendaprofesional_id,
+                        estado : 'Previa',
+                        lista_correlativos : []
+                    }
+                    apiFunctions.post(api.visaciones.encomienda, null, data, (response) => {
+                        console.log(' dato registro ')
+                        console.log(response)
+                        
+                    }, (response) => {
+                        console.log(' error  grupos ')
+                        console.log(response)
+                    
+                    }, null);
+                });
+            }
+        }
         return data;
     }
 
@@ -279,19 +307,38 @@ class Modal extends Component {
         return validate;
     }
 
+    handleOpcionChange = (event) => {
+        this.setState({
+            opcionSeleccionada : event.target.value
+        })
+        //setOpcionSeleccionada(event.target.value);
+    }
+
+    searchVisacionesGroup(field, value){
+        const { listaGrupoVisaciones } = this.props;
+        this.setState({
+            idGrupoVisacion : value
+        })
+        let dataVisaciones = listaGrupoVisaciones.find(x => x.id == value);
+        if(dataVisaciones){
+            console.log(dataVisaciones.visaciones)
+            this.setState({
+                listaVisacionesPorGrupo: dataVisaciones.visaciones
+            })
+        }
+    }
+
     onOpen = () => {
-        const { list_encomienda, action } = this.props;
-        const {id } = this.state;
+        const { list_encomienda, action, listaGrupoVisaciones } = this.props;
+        const { id } = this.state;
         if(action==='CREATE'){
 
         }
-
-        
     }
 
     render() {
         let vars = this.modalVars();
-        const { action, list_encomienda, list_tipovisaciones } = this.props;
+        const { action, list_encomienda, list_tipovisaciones, listaGrupoVisaciones } = this.props;
         const {               
             estadosplantillas,
             estadosplantillas_id,
@@ -303,6 +350,9 @@ class Modal extends Component {
             listVisacionesEncomienda,
             lista_correlativos,
             list_tipovisaciones_local,
+            opcionSeleccionada,
+            idGrupoVisacion,
+            listaVisacionesPorGrupo,
             estado } = this.state;
         
         return (
@@ -355,102 +405,196 @@ class Modal extends Component {
                             >Registro de observaciones</NavLink>
                         </NavItem>}
                 </Nav>
-                
+
                 <TabContent
                     activeTab={this.state.activeTab}
                     className={"pb-2"}>
 
                     <TabPane tabId={0} className="py-1">
                         <ParadigmaLabeledInput
-                        label="Encomienda"
-                        md={[4, 8]}
-                        inputComponent={
-                            <ParadigmaAsyncSeeker
-                                // disabled={vars.disabled}
-                                disabled={vars.disabled || action!="CREATE" }
-                                url={undefined}
-                                clearable={false}
-                                displayField={"nroOrden"}
-                                value={encomiendaprofesional_id}
-                                optionDefault={list_encomienda.map(e => {return { id: e.id, nroOrden: e.nroOrden }})}
-                                onChange={e => this.onChangeSelectEncomienda(e)}                           
-                            />
-                        }
-                        error={() => this.getError('encomiendaprofesional_id')}
-                        />
-                        <ParadigmaLabeledInput
-                            label="Plantilla Visación"
+                            label="Encomienda"
                             md={[4, 8]}
                             inputComponent={
                                 <ParadigmaAsyncSeeker
                                     // disabled={vars.disabled}
-                                    disabled={vars.disabled}
+                                    disabled={vars.disabled || action!="CREATE" }
                                     url={undefined}
                                     clearable={false}
-                                    value={estadosplantillas_id}
-                                    displayField={'nombre'}
-                                    optionDefault={list_tipovisaciones_local.map(e => {return { id: e.id, nombre: e.nombre }})}
-                                    onChange={e => this.onChangeField('estadosplantillas_id', (e) ? (e.id) : (null))}
+                                    displayField={"nroOrden"}
+                                    value={encomiendaprofesional_id}
+                                    optionDefault={list_encomienda.map(e => {return { id: e.id, nroOrden: e.nroOrden }})}
+                                    onChange={e => this.onChangeSelectEncomienda(e)}                           
                                 />
                             }
-                            error={() => this.getError('estadosplantillas_id')}
+                            error={() => this.getError('encomiendaprofesional_id')}
                         />
-                        
-                        <ParadigmaLabeledInput
-                            label="Visaciones Previas"
-                            md={[4, 8]}
-                            classNames={['pr-0','']}
-                            error={() => this.getError('lista_correlativos')}
-                            inputComponent={
-                                <ParadigmaAsyncSeeker
-                                    disabled={vars.disabled}
-                                    multiselect={true}
-                                    clearable={false}
-                                    url={undefined}
-                                    value={lista_correlativos}
-                                    optionDefault={listVisacionesEncomienda.map(e => {return { id: e.id, nombre: e.nombre, numero: e.numero }})}
-                                    parameters={{
-                                        paginationEnabled:false,
-                                    }}
-                                    valueRenderer={data => `${data.numero} => ${data.nombre}`}
-                                    optionRenderer={data => `${data.numero} => ${data.nombre}`}                                
-                                    onChange={data => this.onChangeField('lista_correlativos', data ? data.map(e => e.id) : [])}
+
+                        {
+                            (action == 'CREATE') && (
+                                <div>
+                                <Row>
+                                    <Col style={{ marginTop: '10px' }}>
+                                        <Label>Selecciona una opción</Label>
+                                    </Col>
+                                </Row>
+                                <Row>                            
+                                    <Col style={{ marginBottom: '5px' }}>
+                                        <FormGroup check inline>
+                                            <Input 
+                                                type="radio" 
+                                                name="visacionGroup" 
+                                                value="Sin pack"
+                                                checked={opcionSeleccionada === 'Sin pack'}
+                                                onChange={this.handleOpcionChange}
+                                            />
+                                            <Label check>
+                                                Visación individual
+                                            </Label>
+                                        </FormGroup>
+                                        
+                                        <FormGroup check inline>
+                                            <Input 
+                                                type="radio" 
+                                                name="visacionGroup" 
+                                                value="Con pack"
+                                                checked={opcionSeleccionada === 'Con pack'}
+                                                onChange={this.handleOpcionChange}
+                                            />
+                                            <Label check>
+                                                Usar paquete de visaciones
+                                            </Label>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                                </div>
+                            )
+                        }
+                       
+
+                        {
+                            (opcionSeleccionada === 'Sin pack' || action != 'CREATE' ) && (
+                                <div>
+                                <ParadigmaLabeledInput
+                                    label="Plantilla Visación"
+                                    md={[4, 8]}
+                                    inputComponent={
+                                        <ParadigmaAsyncSeeker
+                                            // disabled={vars.disabled}
+                                            disabled={vars.disabled}
+                                            url={undefined}
+                                            clearable={false}
+                                            value={estadosplantillas_id}
+                                            displayField={'nombre'}
+                                            optionDefault={list_tipovisaciones_local.map(e => {return { id: e.id, nombre: e.nombre }})}
+                                            onChange={e => this.onChangeField('estadosplantillas_id', (e) ? (e.id) : (null))}
+                                        />
+                                    }
+                                    error={() => this.getError('estadosplantillas_id')}
                                 />
-                            }
-                        /> 
-                        
-                        <ParadigmaLabeledInput 
-                            disabled={vars.disabled}
-                            md={[4, 8]}
-                            maxLength={50}
-                            label={"Fecha Estimación"} 
-                            inputComponent={
-                                <ParadigmaDatePicker
+                                <ParadigmaLabeledInput
+                                    label="Visaciones Previas"
+                                    md={[4, 8]}
+                                    classNames={['pr-0','']}
+                                    error={() => this.getError('lista_correlativos')}
+                                    inputComponent={
+                                        <ParadigmaAsyncSeeker
+                                            disabled={vars.disabled}
+                                            multiselect={true}
+                                            clearable={false}
+                                            url={undefined}
+                                            value={lista_correlativos}
+                                            optionDefault={listVisacionesEncomienda.map(e => {return { id: e.id, nombre: e.nombre, numero: e.numero }})}
+                                            parameters={{
+                                                paginationEnabled:false,
+                                            }}
+                                            valueRenderer={data => `${data.numero} => ${data.nombre}`}
+                                            optionRenderer={data => `${data.numero} => ${data.nombre}`}                                
+                                            onChange={data => this.onChangeField('lista_correlativos', data ? data.map(e => e.id) : [])}
+                                        />
+                                    }
+                                />
+                                <ParadigmaLabeledInput 
                                     disabled={vars.disabled}
-                                    // disabled={true}
-                                    value={fechaestimacion}
-                                    onChange={(e) => this.setState({ 'fechaestimacion': e })}
-                                    datetime={false}
-                                    className={"inp_fecha"}
-                                />} 
-                            error={() => this.getError('fechaestimacion')}
-                        />
-                        <ParadigmaLabeledInput 
-                            disabled={vars.disabled}
-                            md={[4, 8]}
-                            maxLength={50}
-                            label={"Fecha Caducidad"} 
-                            inputComponent={
-                                <ParadigmaDatePicker
+                                    md={[4, 8]}
+                                    maxLength={50}
+                                    label={"Fecha Estimación"} 
+                                    inputComponent={
+                                        <ParadigmaDatePicker
+                                            disabled={vars.disabled}
+                                            // disabled={true}
+                                            value={fechaestimacion}
+                                            onChange={(e) => this.setState({ 'fechaestimacion': e })}
+                                            datetime={false}
+                                            className={"inp_fecha"}
+                                        />} 
+                                    error={() => this.getError('fechaestimacion')}
+                                />
+                                <ParadigmaLabeledInput 
                                     disabled={vars.disabled}
-                                    // disabled={true}
-                                    value={fechacaducidad}
-                                    onChange={(e) => this.setState({ 'fechacaducidad': e })}
-                                    datetime={false}
-                                    className={"inp_fecha"}
-                                />} 
-                            error={() => this.getError('fechacaducidad')}
-                        />
+                                    md={[4, 8]}
+                                    maxLength={50}
+                                    label={"Fecha Caducidad"} 
+                                    inputComponent={
+                                        <ParadigmaDatePicker
+                                            disabled={vars.disabled}
+                                            // disabled={true}
+                                            value={fechacaducidad}
+                                            onChange={(e) => this.setState({ 'fechacaducidad': e })}
+                                            datetime={false}
+                                            className={"inp_fecha"}
+                                        />} 
+                                    error={() => this.getError('fechacaducidad')}
+                                />
+                                </div>
+                            )
+                        }
+                        {
+                            (opcionSeleccionada === 'Con pack' && action == 'CREATE' ) && (
+                                <div>
+                                    <ParadigmaLabeledInput
+                                        label="Grupo de visaciones"
+                                        md={[4, 8]}
+                                        inputComponent={
+                                            <ParadigmaAsyncSeeker
+                                                // disabled={vars.disabled}
+                                                disabled={vars.disabled}
+                                                url={undefined}
+                                                clearable={false}
+                                                value={idGrupoVisacion}
+                                                displayField={'nombre'}
+                                                optionDefault={listaGrupoVisaciones.map(e => {return { id: e.id, nombre: e.nombre_grupo }})}
+                                                onChange={e => this.searchVisacionesGroup('idGrupoVisacion', (e) ? (e.id) : (null))}
+                                            />
+                                        }
+                                        error={() => this.getError('idGrupoVisacion')}
+                                    />
+                                    {
+                                        listaVisacionesPorGrupo.length > 0 ? (
+                                            <div  style={{ marginTop: '10px'}} >
+                                                <ListGroup>
+                                                    {
+                                                        listaVisacionesPorGrupo.map((e, index) => {
+                                                            return (
+                                                                 <ListGroupItem  key={index} >
+                                                                    <strong>{(index + 1)} .-  Visación #{e.numero}</strong><br></br>
+                                                                    {e.nombre}                                                                   
+                                                                </ListGroupItem>
+                                                            )
+                                                        })
+                                                    }
+                                                   
+                                                </ListGroup>
+                                            </div>
+                                        ) : (
+                                            <div style={{textAlign:'center', marginTop: '10px'}} >
+                                                <strong style={{color: 'red'}} >Sin visaciónes</strong>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+
                         {
                             action != 'CREATE' && 
                             <ParadigmaLabeledInput
@@ -501,11 +645,6 @@ class Modal extends Component {
                         
                     </TabPane>
                 </TabContent>
-
-                
-
-                
-
             </ParadigmaModal>
         );
     }
