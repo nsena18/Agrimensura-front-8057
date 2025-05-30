@@ -22,17 +22,19 @@ class Modal extends Component {
             objeto_id: null,
             fechaIngreso: moment(),
             //Cambio Estado
-            estado: 0,
+            estado_id: 0,
+            estado: '',
             observaciones: '',
             archivo: null,
-            postVariables: [ 'estado', 'observaciones', 'archivo', 'fecharegistrada'],
+            postVariables: [ 'estado_id', 'estado', 'observaciones', 'archivo', 'fecharegistrada'],
             errors: [],
-            lista_estados: ['Previa', 'Observada', 'Definitiva'],
+            lista_estados: [],
             tituloModal : '',
             labelarchivo : '',
             listVisacionesEncomiendaPrevia: [],
             isGoProcess : true,
-            encomiendaRef: ''
+            encomiendaRef: '',
+            listaIdEstados : [],
         };
     }
 
@@ -48,27 +50,40 @@ class Modal extends Component {
             id: null,
             fechaIngreso: moment(),            
             //Cambio Estado
-            estado: 0,
+            estado: '',
+            estado_id: 0,
             observaciones: '',
             archivo: null,
             errors: [],
-            lista_estados: ['Previa', 'Observada', 'Definitiva'],
+            lista_estados: [],
             tituloModal : '',
             labelarchivo : '',
             listVisacionesEncomiendaPrevia: [],
             isGoProcess : true,
-            encomiendaRef: ''
+            encomiendaRef: '',
+             listaIdEstados : [],
         });
     }
 
     getData() {
-        const { precioUnitario, postVariables,fechaIngreso, estado, importePresupuesto, mostrarImporte } = this.state;
+        const { precioUnitario, postVariables,fechaIngreso, estado, importePresupuesto, mostrarImporte, estado_id } = this.state;
         let data = {};
         postVariables.forEach(x => {
             data[x] = this.state[x];
         });
-        data['fecharegistrada'] = fechaIngreso.format('YYYY-MM-DD')
+        data['fecharegistrada'] = fechaIngreso.format('YYYY-MM-DD');
+        data['estado'] = this.searchEstadoVisacion(estado_id);
         return data;
+    }
+
+    searchEstadoVisacion(id) {   
+        const { lista_estados_r  } = this.props;
+       let estadoEncontrado = lista_estados_r.find(x => x.id == id );
+       console.log(estadoEncontrado)
+        if( estadoEncontrado ) {
+            return estadoEncontrado.nombre;
+        }
+        return null;
     }
 
     filtrarDesdePosicion(array, elementoInicial) {
@@ -82,17 +97,20 @@ class Modal extends Component {
       }
 
     setData(data) {
-        const { action, ar_estados } = this.props;
+        const { action, ar_estados, lista_estados_r  } = this.props;
         const { lista_estados } = this.state;
         if (data.success) {
             let estado = data.estado;
             let indice = lista_estados.indexOf(estado);
             let filtr =  lista_estados.slice(indice);
             let idEncomiendaPadre = data.encomiendaprofesional.id;
-
+            let registrosEstados = data.estadosplantillas.listaestadosid
+            let estadoActual = data.controlestados;
+            console.log(data)
             if(action!='DELETE'){
                 let list_correlativos = data.lista_correlativos == null ? [] : data.lista_correlativos;
                 apiFunctions.get(api.visaciones.listadovisacionesencomiendas , idEncomiendaPadre, null, null, (response) => {
+                    console.log('dentro')
                     let registros =  response.data
                     let visacionesFormateada = registros
                         .filter(registro => registro.id && list_correlativos.includes(registro.id))
@@ -100,32 +118,44 @@ class Modal extends Component {
                             id: e.id,
                             nombre: e.estadosplantillas.nombre,
                             numero: e.estadosplantillas.numero,
-                            estado: e.estado
+                            estado: e.estado_id,
+                            lista_estados: e.estadosplantillas.listaestadosid
                         }));
+                    
                     if(visacionesFormateada.length > 0) {
                         let existe = visacionesFormateada.some(e => 
                             e.estado == 'Previa' || 
                             e.estado == 'Observada'
-                          );
+                        );
                         this.setState({
                             listVisacionesEncomiendaPrevia:visacionesFormateada,
                             isGoProcess : !existe,
                             encomiendaRef: data.encomiendaprofesional.nroOrden
                         })
+                    } else {
+                        let newEstados = lista_estados_r.
+                            filter(  registro => registro.id && registrosEstados.includes(registro.id) )
+                            .map((e) =>({
+                                id: e.id,
+                                nombre: e.nombre,
+                            }))
+                         this.setState({
+                            lista_estados :newEstados,                            
+                            encomiendaRef: data.encomiendaprofesional.nroOrden
+                        })
                     }
-
-                   
                 });
-
             }
+
             this.setState({
                 id: data.id,
                 estado: data.estado,
                 lista_estados: filtr,
                 tituloModal : data.estadosplantillas.titulomodal,
-                labelarchivo : data.estadosplantillas.labelarchivo
+                labelarchivo : data.estadosplantillas.labelarchivo,
+                listaIdEstados : data.estadosplantillas.listaestadosid,
+                estado_id : data.estado_id,
             });
-
 
         }
     }
@@ -233,7 +263,7 @@ class Modal extends Component {
     render() {
         let vars = this.modalVars();
         const { action, ar_estados } = this.props;
-        const { lista_estados, estadoAnterior, estado, observaciones,encomiendaRef, archivo, isGoProcess, labelarchivo, listVisacionesEncomiendaPrevia } = this.state;
+        const { lista_estados, estadoAnterior, estado, estado_id, observaciones,encomiendaRef, archivo, isGoProcess, labelarchivo, listVisacionesEncomiendaPrevia } = this.state;
 
         return (
             <ParadigmaModal
@@ -241,21 +271,16 @@ class Modal extends Component {
                 submitUrl={(vars.submitType ? api.visaciones.cambioestado : null)}
                 submitType={vars.submitType}
                 id={vars.id}
-
                 onGotData={(data) => this.setData(data)}
                 onGotErrors={(errors) => this.setErrors(errors)}
                 onSubmit={(e) => this.props.onSubmit(e)}
                 onClose={() => this.resetForm()}
                 onPreSubmit={() => this.getData()}
                 onValidation={() => this.onValidation()}
-
                 cancelButtonLabel={vars.cancelButtonLabel}
-
                 title={vars.title}
-
                 danger={vars.danger}
                 buttonClass={vars.buttonClass}
-
                 successMessage={vars.successMessage}
                 missingIdMessage={"Debe seleccionar una fila."}
                 saveButtonLabel={vars.saveButtonLabel}
@@ -263,7 +288,6 @@ class Modal extends Component {
                 buttonIcon={vars.buttonIcon}
                 saveButton={vars.saveButton}
                 closeButton={true}
-
                 // className={'modal-lg'}
                 fileUploader
                 escClose={true}
@@ -279,12 +303,12 @@ class Modal extends Component {
                                     <ParadigmaAsyncSeeker
                                         url={undefined}
                                         clearable={false}
-                                        optionDefault={lista_estados.map(e => {return {nombre: e, id: e }})}
-                                        value={estado}
-                                        onChange={e => this.setState({ estado: e.id })}
+                                        optionDefault={lista_estados.map(e => {return {nombre: e.nombre, id: e.id }})}
+                                        value={estado_id}
+                                        onChange={e => this.setState({ estado_id: e.id })}
                                     />
                                 }
-                                error={() => this.getError('estado')}
+                                error={() => this.getError('estado_id')}
                             />
 
                         <ParadigmaLabeledInput
@@ -313,7 +337,6 @@ class Modal extends Component {
                         />
                     </Fragment>
                 :
-
                    (!isGoProcess) ?
                    <Fragment>
                         <h4 className='text-center' >Listado de visaciones</h4><br></br>
@@ -342,11 +365,7 @@ class Modal extends Component {
                     </Fragment>
                     :
                     <h2 className={'text-center'}>{(estado!='Previa') ? 'Retroceder al estado "'+( estado == 'Definitiva' ? 'Observada' : 'Previa'  )+'"' : ('No se puede retroceder la visación')}</h2>
-                    
                 }
-            
-                
-
             </ParadigmaModal>
         );
     }

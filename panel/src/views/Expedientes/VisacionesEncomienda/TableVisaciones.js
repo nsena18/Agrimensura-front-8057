@@ -68,6 +68,13 @@ class TableVisaciones extends Component {
                     show: false,
                 },
                 {
+                    Header: "Control",
+                    id: "controlestados",
+                    accessor: "controlestados",
+                    exportWidth: '8%',
+                    show: false,
+                },
+                {
                     Header: "Nombre Visación",
                     id: "estadosplantillas_nombre",
                     accessor: d => (d.estadosplantillas_nombre),
@@ -129,27 +136,12 @@ class TableVisaciones extends Component {
                 },
                 {
                     Header: "Estado",
-                    id: "estado",
+                    id: "estado_id",
                     accessor: e =><div
                             className="btn py-0"
-                            style={{
-                                background: 
-                                    e.estado === 'Previa' ? '#FFEB3B' :  // Amarillo
-                                    e.estado === 'Observada' ? '#4CAF50' :  // Verde
-                                    e.estado === 'Definitiva' ? '#2196F3' :  // Azul
-                                    '#BBBBBB',  // Gris por defecto
-                                color: 
-                                    e.estado === 'Previa' ? '#000000' :  // Texto negro para amarillo
-                                    e.estado === 'Observada' || e.estado === 'Definitiva' ? '#FFFFFF' :  // Texto blanco
-                                    '#FFFFFF',  // Texto blanco por defecto
-                                width: 160,
-                                height: 17,
-                                fontSize: '0.8em',
-                                marginTop: '0px',
-                                borderTopWidth: '0px',
-                            }}
+                             
                         >
-                            {e.estado}  {/* Cambié 'd.estado' a 'e.estado' para coincidir con tu objeto */}
+                            {e.controlestados != null ? e.controlestados.nombre : 'No asignado'}
                         </div>,
                     width: 160,
                     exportWidth: '5%',
@@ -157,6 +149,7 @@ class TableVisaciones extends Component {
                 },
             ],
             listaGrupoVisaciones : [],
+            listaEstadosVisaciones: [],
         };
     }
 
@@ -175,23 +168,23 @@ class TableVisaciones extends Component {
         });
 
         apiFunctions.get(api.visaciones.listagruposvisaciones, null, null, null, (response) => {
-            console.log(' registros grupos ')
-            console.log(response)
             this.setState({
                 listaGrupoVisaciones: response.data
             })
         });
 
-        // api.visaciones.estadosSelect
+         apiFunctions.get(api.visaciones.controlEstadosSelect, null, null, null, (response) => {
+            this.setState(
+                {
+                    listaEstadosVisaciones: response.data
+                }
+            )
+        });
     }
 
     render() {
-        const { list_encomienda, usuario_id, list_tipovisaciones, listaGrupoVisaciones } = this.state;
+        const { list_encomienda, usuario_id, list_tipovisaciones, listaGrupoVisaciones, listaEstadosVisaciones } = this.state;
         const outerSort = [
-        //   {
-        //     id: 'nombre',
-        //     desc: false
-        //   },
         ];
 
         return (
@@ -199,32 +192,32 @@ class TableVisaciones extends Component {
                 buttons={[
                     {
                         create: true,
-                        component: (props) => <Modal {...props} action="CREATE" listaGrupoVisaciones={listaGrupoVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        component: (props) => <Modal {...props} action="CREATE"  lista_estados={listaEstadosVisaciones}   listaGrupoVisaciones={listaGrupoVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
                         permission: 'encomiendaprofesional_new',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="EDIT" list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        component: (props) => <Modal {...props} action="EDIT"  lista_estados={listaEstadosVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
                         permission: 'encomiendaprofesional_edit',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="DETAIL" list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        component: (props) => <Modal {...props} action="DETAIL" lista_estados={listaEstadosVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
                         permission: 'encomiendaprofesional_detail',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="DELETE" list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        component: (props) => <Modal {...props} action="DELETE" lista_estados={listaEstadosVisaciones} list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
                         permission: 'encomiendaprofesional_delete',
                     },                 
                    {
                         edit: true,
-                        component: (props) => <CambioEstado {...props} list_encomienda={list_encomienda} action="DELETE" />,
+                        component: (props) => <CambioEstado {...props}   lista_estados_r={listaEstadosVisaciones}  list_encomienda={list_encomienda} action="DELETE" />,
                         permission: 'encomiendaprofesional_edit',
                     },
                     {
                         edit: true,
-                        component: (props) => <CambioEstado {...props} list_encomienda={list_encomienda} action="EDIT" />,
+                        component: (props) => <CambioEstado {...props}  lista_estados_r={listaEstadosVisaciones}   list_encomienda={list_encomienda} action="EDIT" />,
                         permission: 'encomiendaprofesional_edit',
                     },                                   
                 ]}

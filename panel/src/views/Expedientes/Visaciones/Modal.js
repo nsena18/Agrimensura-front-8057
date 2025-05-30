@@ -24,12 +24,13 @@ class Modal extends Component {
             plantilla_id: null,
             activemail: false,
             postVariables: ['numero', 'nombre', 'background', 'texto', 'diasestimados',
-                            'archivoobligatorio', 'labelarchivo', 
+                            'archivoobligatorio', 'labelarchivo',  'listaestadosid',
                             'titulomodal',  'avanzacliente', 'plantilla_id', 'activemail', 'comitentesentidades_id'
                            ],
             errors: [],
             comitentesentidades_id: 0,
-            organismo : null
+            organismo : null,
+            listaestadosid: [],
         };
     }
 
@@ -56,6 +57,7 @@ class Modal extends Component {
             errors: [],
             comitentesentidades_id: 0,
             organismo: null,
+            listaestadosid: [],
             
         });
     }
@@ -83,7 +85,7 @@ class Modal extends Component {
     }
 
     setData(data) {
-        const { listEntidades } = this.props;
+        const { listEntidades, listaControlEstados } = this.props;
         if (data.success) {
             console.log(data)
             this.setState({
@@ -103,6 +105,7 @@ class Modal extends Component {
                 plantilla_id: data.plantilla ? data.plantilla.id : null,
                 activemail: data.activemail,
                 comitentesentidades_id: data.comitentesentidades == null ? 0 : data.comitentesentidades.id,
+                listaestadosid: data.listaestadosid ?  data.listaestadosid : []
             })
             if(data.comitentesentidades != null) {
                 let obj = listEntidades.find( x => x.id == data.comitentesentidades.id);
@@ -110,8 +113,6 @@ class Modal extends Component {
                     organismo: obj
                 })
             }
-            
-
         }
     }
 
@@ -216,7 +217,7 @@ class Modal extends Component {
     }
 
     render() {
-        const { listEntidades } = this.props;
+        const { listEntidades, listaControlEstados } = this.props;
         const { 
             numero,
             nombre,
@@ -230,7 +231,8 @@ class Modal extends Component {
             plantilla_id,
             activemail,
             comitentesentidades_id,
-            organismo
+            organismo,
+            listaestadosid
          } = this.state;
         let vars = this.modalVars();
 
@@ -329,6 +331,31 @@ class Modal extends Component {
                                 />
                             }
                         /> 
+                    </Col>
+
+                    <Col className={'col-12 mt-2'}>
+                        <ParadigmaLabeledInput
+                            label="Estados visaciones"
+                            md={[4, 8]}
+                            classNames={['pr-0','']}
+                            error={() => this.getError('listaestadosid')}
+                            inputComponent={
+                                <ParadigmaAsyncSeeker
+                                    disabled={vars.disabled}
+                                    multiselect={true}
+                                    clearable={false}
+                                    url={undefined}
+                                    value={listaestadosid}
+                                    optionDefault={listaControlEstados.map(e => {return { id: e.id, nombre: e.nombre, numero: e.numero }})}
+                                    parameters={{
+                                        paginationEnabled:false,
+                                    }}
+                                    valueRenderer={data => `${data.numero} => ${data.nombre}`}
+                                    optionRenderer={data => `${data.numero} => ${data.nombre}`}                                
+                                    onChange={data => this.onChangeField('listaestadosid', data ? data.map(e => e.id) : [])}
+                                />
+                            }
+                        />
                     </Col>
 
                     <Col className={'col-12 mt-2'} onClick={() => {this.onChangeField('archivoobligatorio', !archivoobligatorio)}}>

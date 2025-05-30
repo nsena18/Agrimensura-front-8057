@@ -22,7 +22,7 @@ class Modal extends Component {
         const { list_tipovisaciones } = this.props;     
         this.state = {
             id: null,
-            estado:0,
+            estado_id:0,
             estadosplantillas: null,
             estadosplantillas_id: null, 
             encomiendaprofesional: null,
@@ -36,7 +36,7 @@ class Modal extends Component {
                 'encomiendaprofesional_id',
                 'fechacaducidad',
                 'fechaestimacion',
-                'estado',
+                'estado_id',
                 'lista_correlativos',
             ],
             errors: [],
@@ -48,6 +48,7 @@ class Modal extends Component {
             opcionSeleccionada : 'Sin pack',
             idGrupoVisacion : null,
             listaVisacionesPorGrupo : [],
+            textoEstado: '',
         };
     }
 
@@ -67,12 +68,15 @@ class Modal extends Component {
             encomiendaprofesional_id: null,
             fechacaducidad: moment(),
             fechaestimacion: moment(),
-            estado:0,
+            estado_id:0,
             errors: [],
             listObservaciones : [],
             listVisacionesEncomienda:[],
             lista_correlativos : [],
             list_tipovisaciones_local: [],
+            idGrupoVisacion : null,
+            opcionSeleccionada : 'Sin pack',
+            textoEstado: '',
         });
     }
 
@@ -90,9 +94,12 @@ class Modal extends Component {
         data['fechaestimacion'] = fechaestimacion.format('YYYY-MM-DD')
         if(opcionSeleccionada === 'Con pack') {
             let dataVisaciones = listaGrupoVisaciones.find(x => x.id == idGrupoVisacion);
-            if(dataVisaciones){
+            if(dataVisaciones.visaciones.length > 1){
                 console.log(dataVisaciones.visaciones)
-                dataVisaciones.visaciones.forEach( (element, index) => {
+                let visacionesList = dataVisaciones.visaciones;
+                let objPrimero = visacionesList.shift();
+                console.log(objPrimero)
+                visacionesList.forEach( (element, index) => {
                      let data = {
                         fechacaducidad : moment().add(1, 'days').format('YYYY-MM-DD'),
                         fechaestimacion : moment().format('YYYY-MM-DD'),
@@ -104,13 +111,18 @@ class Modal extends Component {
                     apiFunctions.post(api.visaciones.encomienda, null, data, (response) => {
                         console.log(' dato registro ')
                         console.log(response)
-                        
                     }, (response) => {
                         console.log(' error  grupos ')
                         console.log(response)
-                    
                     }, null);
                 });
+                data['estadosplantillas_id'] = objPrimero.id;
+                data['fechacaducidad'] = moment().add(1, 'days').format('YYYY-MM-DD');
+                data['fechaestimacion'] = moment().format('YYYY-MM-DD');
+            } else if(dataVisaciones.visaciones.length == 1){
+                data['estadosplantillas_id'] = dataVisaciones.visaciones[0].id;
+                data['fechacaducidad'] = moment().add(1, 'days').format('YYYY-MM-DD');
+                data['fechaestimacion'] = moment().format('YYYY-MM-DD');
             }
         }
         return data;
@@ -129,7 +141,7 @@ class Modal extends Component {
                 encomiendaprofesional_id: idEncomiendaPadre,
                 fechacaducidad: moment(data.fechacaducidad),
                 fechaestimacion: moment(data.fechaestimacion),
-                estado:data.estado,
+                estado_id:data.estado_id,
                 lista_correlativos: data.lista_correlativos == null ? [] : data.lista_correlativos,
             });
 
@@ -169,6 +181,8 @@ class Modal extends Component {
                     list_tipovisaciones_local : resultadoNewEstadosPlantillas,
                 })
             });
+
+            this.searchEstadoVisacion(data.estado_id)
         }
     }
 
@@ -218,6 +232,7 @@ class Modal extends Component {
     }
 
     onChangeField(field, value) {
+        const { action  } = this.props;
         this.setState(prevState => {
             let errors = prevState.errors;
             if (errors) errors[field] = null;
@@ -225,8 +240,41 @@ class Modal extends Component {
             prevState[field] = value;
             return prevState;
         });
+
+        if( field == 'estadosplantillas_id' && action == 'CREATE' ){
+            this.searchEstadoInicialVisacion( value );
+        }
     }
 
+    searchEstadoInicialVisacion(id) {   
+         const { lista_estados  } = this.props;
+        apiFunctions.get(api.visaciones.estados , id, null, null, (response) => {                   
+             let registros =  response.data
+             if( registros.listaestadosid.length > 0 ) {
+                let idInicial = registros.listaestadosid[0];
+                let estadoEncontrado = lista_estados.find(x => x.id == idInicial );
+                if( estadoEncontrado ) {
+                    this.setState({
+                         estado_id : estadoEncontrado.id,
+                         textoEstado: estadoEncontrado.nombre
+                    })
+                }
+                console.log(estadoEncontrado)
+             }
+        });
+    }
+
+    searchEstadoVisacion(id) {   
+        const { lista_estados  } = this.props;
+       let estadoEncontrado = lista_estados.find(x => x.id == id );
+       console.log(estadoEncontrado)
+        if( estadoEncontrado ) {
+            this.setState({
+                    estado_id : estadoEncontrado.id,
+                    textoEstado: estadoEncontrado.nombre
+            })
+        }
+    }
     getError(field) {
         let errors = this.state.errors;
         if (errors) return errors[field];
@@ -353,7 +401,8 @@ class Modal extends Component {
             opcionSeleccionada,
             idGrupoVisacion,
             listaVisacionesPorGrupo,
-            estado } = this.state;
+            textoEstado,
+            estado_id } = this.state;
         
         return (
             <ParadigmaModal
@@ -475,12 +524,13 @@ class Modal extends Component {
                             (opcionSeleccionada === 'Sin pack' || action != 'CREATE' ) && (
                                 <div>
                                 <ParadigmaLabeledInput
+                                     disabled={vars.disabled || action!="CREATE" }
                                     label="Plantilla Visación"
                                     md={[4, 8]}
                                     inputComponent={
                                         <ParadigmaAsyncSeeker
                                             // disabled={vars.disabled}
-                                            disabled={vars.disabled}
+                                            disabled={vars.disabled || action!="CREATE"}
                                             url={undefined}
                                             clearable={false}
                                             value={estadosplantillas_id}
@@ -601,11 +651,11 @@ class Modal extends Component {
                                 disabled={true}
                                 md={[4, 8]}
                                 type={"text"}
-                                maxLength={50}
+                                maxLength={100}
                                 label="Estado"
-                                value={estado}
-                                onChange={(e) => this.onChangeField('estado', e.target.value)}
-                                error={() => this.getError('estado')}
+                                value={textoEstado}
+                                onChange={(e) => this.onChangeField('estado_id', estado_id)}
+                                error={() => this.getError('estado_id')}
                             />
                         }
                     </TabPane>

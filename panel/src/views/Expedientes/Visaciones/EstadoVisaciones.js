@@ -73,8 +73,10 @@ class Estados extends Component {
                 }              
             ],
             listEntidades: [],
+            listaControlEstados: [],
         };
     }
+
     componentDidMount = () => { 
         apiFunctions.get(api.comitentes.entidadesselect, null, null, null, (response) => {
             console.log('response')
@@ -85,30 +87,41 @@ class Estados extends Component {
                 }
             )
         });
+
+        apiFunctions.get(api.visaciones.controlEstadosSelect, null, null, null, (response) => {
+            console.log('response')
+            console.log(response)
+            this.setState(
+                {
+                    listaControlEstados: response.data
+                }
+            )
+        });
+
     }
     render() {
-        const { data, pages, loading, listEntidades} = this.state;
+        const { data, pages, loading, listEntidades, listaControlEstados} = this.state;
         return (
             <ParadigmaTable
                 buttons={[
                     {
                         create: true,
-                        component: (props) => <Modal {...props} action="CREATE" listEntidades={listEntidades} />,
+                        component: (props) => <Modal {...props} action="CREATE" listEntidades={listEntidades} listaControlEstados={listEntidades} />,
                         permission: 'estadosencomienda_edit',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="EDIT" listEntidades={listEntidades}/>,
+                        component: (props) => <Modal {...props} action="EDIT" listEntidades={listEntidades} listaControlEstados={listaControlEstados}/>,
                         permission: 'estadosencomienda_edit',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="DETAIL" listEntidades={listEntidades}/>,
+                        component: (props) => <Modal {...props} action="DETAIL" listEntidades={listEntidades} listaControlEstados={listaControlEstados}/>,
                         permission: 'estadosencomienda_detail',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="DELETE" listEntidades={listEntidades}/>,
+                        component: (props) => <Modal {...props} action="DELETE" listEntidades={listEntidades} listaControlEstados={listaControlEstados}/>,
                         permission: 'estadosencomienda_delete',
                     }
                     // {
@@ -120,7 +133,7 @@ class Estados extends Component {
                 apiUrl={api.visaciones.estados}
                 columns={this.state.columns}
                 /* exportUrl={api.expedientes.estadosencomienda} */
-                title={"Estados Visaciones"}
+                title={"Plantillas Visaciones"}
             />
         );
     }

@@ -133,6 +133,12 @@ export default {
 								permission: 'estadosencomienda_view'
 							},
 							{
+								name: 'Plantillas Visaciones',
+								url: '/plantillasvisaciones',
+								// icon: 'fa fa-user',
+								permission: 'estadosencomienda_view'
+							},
+							{
 								name: 'Grupo de Visaciones',
 								url: '/agrupacionvisaciones',
 								// icon: 'fa fa-user',

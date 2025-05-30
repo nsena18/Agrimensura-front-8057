@@ -45,7 +45,9 @@ import MediosDePago from '../../views/CuentasCorrientes/MediosDePago/MediosDePag
 import VisacionesPlantillas from '../../views/Visaciones/Plantillas/Visaciones.js';
 import Visaciones from '../../views/Visaciones/Visar/Visaciones.js';
 
-import EstadosVisaciones from '../../views/Expedientes/Visaciones/EstadoVisaciones.js';
+import PlantillasVisaciones from '../../views/Expedientes/Visaciones/EstadoVisaciones.js';
+import EstadosVisaciones from '../../views/Expedientes/EstadosVisaciones/Estados.js';
+
 import VisacionesEncomieda from '../../views/Expedientes/VisacionesEncomienda/VisacionesEncomienda.js';
 import AgrupacionVisaciones from '../../views/Expedientes/VisacionesAgrupacion/VisacionesAgrupacion.js';
 
@@ -128,6 +130,7 @@ class Full extends Component {
                   <Route path="/visaciones/gestion" name="Visaciones" component={Visaciones} />
 
                   <Route path="/estadosvisaciones" name="EstadosVisaciones" component={EstadosVisaciones} />
+                  <Route path="/plantillasvisaciones" name="PlantillasVisaciones" component={PlantillasVisaciones} />
 
                   <Route path="/agrupacionvisaciones" name="AgrupacionVisaciones" component={AgrupacionVisaciones} />
                   

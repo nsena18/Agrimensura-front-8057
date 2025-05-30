@@ -86,6 +86,8 @@ module.exports = {
         listadovisacionesencomiendas: BASE_URL + "visaciones/encomienda/profesional/",
         agrupacionvisaciones: BASE_URL + "visaciones/agrupacionplantillas/",
         listagruposvisaciones: BASE_URL + "visaciones/getallgruposvisaciones/",
+        controlestados: BASE_URL + "visaciones/controlestados/",
+        controlEstadosSelect: BASE_URL + "visaciones/controlestados/select/",
     },
     container: BASE_URL + "container/",
 }
