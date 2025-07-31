@@ -1,6 +1,6 @@
 module.exports = {
     BASE_URL: BASE_URL,
-    BASE_URL_FRONTEND : BASE_URL_FRONTEND,
+    BASE_URL_FRONTEND: BASE_URL_FRONTEND,
     auth: BASE_URL + "auth/",
     clearToken: BASE_URL + "auth/clear-token/",
     authCheck: BASE_URL + "auth/check/",
@@ -32,6 +32,11 @@ module.exports = {
         profesiones: BASE_URL + "comitentes/profesiones/",
         confirmacion: BASE_URL + "comitentes/confirmacion/",
         entidadesselect: BASE_URL + "comitentes/entidades/listall/",
+        tiposEntidades: BASE_URL + "comitentes/tiposentidades/",
+        tiposEntidadesSelect: BASE_URL + "comitentes/tiposentidades/select/",
+        entidades: BASE_URL + "comitentes/entidades/",
+        entidadesSelect: BASE_URL + "comitentes/entidades/select/",
+
     },
     geograficas: {
         provincias: BASE_URL + "geograficas/provincias/",
@@ -58,7 +63,7 @@ module.exports = {
         encomiendaprofesionalEstadoDeuda: BASE_URL + "expedientes/encomiendaprofesional/estadodeuda/",
 
         encomiendadocumento: BASE_URL + "expedientes/encomiendaprofesional/$id_encomienda/documento/$id_archivo/",
-        
+
         encomiendaAsignarDias: BASE_URL + "expedientes/encomiendaprofesional/asignardiasestimados/",
 
         fichaEncomienda: BASE_URL + "expedientes/encomiendaprofesional/fichaencomienda/$id_encomienda/",
@@ -88,6 +93,7 @@ module.exports = {
         listagruposvisaciones: BASE_URL + "visaciones/getallgruposvisaciones/",
         controlestados: BASE_URL + "visaciones/controlestados/",
         controlEstadosSelect: BASE_URL + "visaciones/controlestados/select/",
+
     },
     container: BASE_URL + "container/",
 }
