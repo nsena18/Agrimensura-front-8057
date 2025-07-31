@@ -50,101 +50,104 @@ import EstadosVisaciones from '../../views/Expedientes/EstadosVisaciones/Estados
 
 import VisacionesEncomieda from '../../views/Expedientes/VisacionesEncomienda/VisacionesEncomienda.js';
 import AgrupacionVisaciones from '../../views/Expedientes/VisacionesAgrupacion/VisacionesAgrupacion.js';
-
+import TiposEntidades from '../../views/TiposEntidades/TiposEntidades.js';
+import Entidades from '../../views/Entidades/Entidades.js';
 import IdleTimer from 'react-idle-timer';
 
 import auth from '../../auth/auth';
 
 class Full extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      idle: false
-    }
-    this.idleTimer = null;
-  }
-
-  onIdle = e => {
-    auth.logout();
-    this.setState(() => ({
-      idle: true
-    }));
-  }
-
-  render() {
-    if (this.state.idle) {
-      return <Redirect to="/locked" />
+    constructor(props) {
+        super(props);
+        this.state = {
+            idle: false
+        }
+        this.idleTimer = null;
     }
 
-    return (
-      <div className="app">
-        <IdleTimer
-          ref={ref => { this.idlerTimer = ref }}
-          element={document}
-          onIdle={this.onIdle}
-          timeout={99999 * 60 * 30}
-        > {/*30 Minutos*/}
-          <Header />
-          <div className="app-body">
-            <Sidebar {...this.props} />
-            <main className="main">
-              <Container fluid>
-                <Switch>
-                  <Route path="/dashboard" name="Dashboard" component={Dashboard} />
+    onIdle = e => {
+        auth.logout();
+        this.setState(() => ({
+            idle: true
+        }));
+    }
 
-                  <Route path="/usuarios/usuarios" name="Usuarios" component={UsuariosCustom} />
-                  <Route path="/usuarios/permisos" name="Permisos" component={Permisos} />
-                  <Route path="/usuarios/grupos" name="Grupos" component={Grupos} />
+    render() {
+        if (this.state.idle) {
+            return <Redirect to="/locked" />
+        }
 
-                  <Route path="/notas" name="Notas" component={Notas} />
-                  <Route path="/comitentes" name="Comitentes" component={Comitentes} />
+        return (
+            <div className="app">
+                <IdleTimer
+                    ref={ref => { this.idlerTimer = ref }}
+                    element={document}
+                    onIdle={this.onIdle}
+                    timeout={99999 * 60 * 30}
+                > {/*30 Minutos*/}
+                    <Header />
+                    <div className="app-body">
+                        <Sidebar {...this.props} />
+                        <main className="main">
+                            <Container fluid>
+                                <Switch>
+                                    <Route path="/dashboard" name="Dashboard" component={Dashboard} />
 
-                  <Route path="/categorias" name="Categorias" component={Categorias} />
-                  <Route path="/profesiones" name="Profesiones" component={Profesiones} />
+                                    <Route path="/usuarios/usuarios" name="Usuarios" component={UsuariosCustom} />
+                                    <Route path="/usuarios/permisos" name="Permisos" component={Permisos} />
+                                    <Route path="/usuarios/grupos" name="Grupos" component={Grupos} />
 
-                  <Route path="/provincias" name="Provincias" component={Provincias} />
-                  <Route path="/localidades" name="Localidades" component={Localidades} />
+                                    <Route path="/notas" name="Notas" component={Notas} />
+                                    <Route path="/comitentes" name="Comitentes" component={Comitentes} />
 
-                  <Route path="/tipoeventos" name="TipoEventos" component={TipoEventos} />
-                  <Route path="/micalendario" name="MiCalendario" component={MiCalendario} />
-                  
-                  <Route path="/estadosencomienda" name="EstadosEncomienda" component={EstadosEncomienda} />
-                  <Route path="/objetosdetrabajo" name="ObjetosDeTrabajo" component={ObjetosDeTrabajo} />
-                  <Route path="/tiposdeencomienda" name="TiposDeEncomienda" component={TiposDeEncomienda} />
-                  <Route path="/estadolotes" name="EstadoLotes" component={EstadoLotes} />
-                  <Route path="/situacionlotes" name="SituacionLotes" component={SituacionLotes} />
-                  
-                  <Route path="/encomiendaprofesional" name="EncomiendaProfesional" component={EncomiendaProfesional} />
+                                    <Route path="/categorias" name="Categorias" component={Categorias} />
+                                    <Route path="/profesiones" name="Profesiones" component={Profesiones} />
 
-                  <Route path="/visaciones" name="Visaciones Encomienda" component={VisacionesEncomieda} />
+                                    <Route path="/provincias" name="Provincias" component={Provincias} />
+                                    <Route path="/localidades" name="Localidades" component={Localidades} />
 
-                  <Route path="/mails/casillas" name="Casillas" component={Casillas} />
-                  <Route path="/mails/plantillas" name="Plantillas" component={Plantillas} />
+                                    <Route path="/tipoeventos" name="TipoEventos" component={TipoEventos} />
+                                    <Route path="/micalendario" name="MiCalendario" component={MiCalendario} />
 
-                  <Route path="/ctacte/cuentascorrientes" name="CuentasCorrientes" component={CuentasCorrientes} />
-                  <Route path="/ctacte/estadodeuda" name="EstadoDeuda" component={EstadoDeuda} />
-                  <Route path="/ctacte/cobrosdeudas" name="CobrosDeudas" component={CobrosDeudas} />
-                  <Route path="/ctacte/mediosdepago" name="MediosDePago" component={MediosDePago} />
+                                    <Route path="/estadosencomienda" name="EstadosEncomienda" component={EstadosEncomienda} />
+                                    <Route path="/objetosdetrabajo" name="ObjetosDeTrabajo" component={ObjetosDeTrabajo} />
+                                    <Route path="/tiposdeencomienda" name="TiposDeEncomienda" component={TiposDeEncomienda} />
+                                    <Route path="/estadolotes" name="EstadoLotes" component={EstadoLotes} />
+                                    <Route path="/situacionlotes" name="SituacionLotes" component={SituacionLotes} />
 
-                  <Route path="/visaciones/plantillas" name="PlantillaVisaciones" component={VisacionesPlantillas} />
-                  <Route path="/visaciones/gestion" name="Visaciones" component={Visaciones} />
+                                    <Route path="/encomiendaprofesional" name="EncomiendaProfesional" component={EncomiendaProfesional} />
 
-                  <Route path="/estadosvisaciones" name="EstadosVisaciones" component={EstadosVisaciones} />
-                  <Route path="/plantillasvisaciones" name="PlantillasVisaciones" component={PlantillasVisaciones} />
+                                    <Route path="/visaciones" name="Visaciones Encomienda" component={VisacionesEncomieda} />
 
-                  <Route path="/agrupacionvisaciones" name="AgrupacionVisaciones" component={AgrupacionVisaciones} />
-                  
-                  
-                  <Redirect from="/" to="/dashboard" />
-                </Switch>
-              </Container>
-            </main>
-          </div>
-          {/* <ShortcutsBar /> */}
-        </IdleTimer>
-      </div>
-    );
-  }
+                                    <Route path="/mails/casillas" name="Casillas" component={Casillas} />
+                                    <Route path="/mails/plantillas" name="Plantillas" component={Plantillas} />
+
+                                    <Route path="/ctacte/cuentascorrientes" name="CuentasCorrientes" component={CuentasCorrientes} />
+                                    <Route path="/ctacte/estadodeuda" name="EstadoDeuda" component={EstadoDeuda} />
+                                    <Route path="/ctacte/cobrosdeudas" name="CobrosDeudas" component={CobrosDeudas} />
+                                    <Route path="/ctacte/mediosdepago" name="MediosDePago" component={MediosDePago} />
+
+                                    <Route path="/visaciones/plantillas" name="PlantillaVisaciones" component={VisacionesPlantillas} />
+                                    <Route path="/visaciones/gestion" name="Visaciones" component={Visaciones} />
+
+                                    <Route path="/estadosvisaciones" name="EstadosVisaciones" component={EstadosVisaciones} />
+                                    <Route path="/plantillasvisaciones" name="PlantillasVisaciones" component={PlantillasVisaciones} />
+
+                                    <Route path="/agrupacionvisaciones" name="AgrupacionVisaciones" component={AgrupacionVisaciones} />
+                                    <Route path="/tiposentidades" name="TiposEntidades" component={TiposEntidades} />
+                                    <Route path="/entidades" name="Entidades" component={Entidades} />
+
+
+                                    <Redirect from="/" to="/dashboard" />
+                                </Switch>
+                            </Container>
+                        </main>
+                    </div>
+                    {/* <ShortcutsBar /> */}
+                </IdleTimer>
+            </div>
+        );
+    }
 }
 
 export default Full;
