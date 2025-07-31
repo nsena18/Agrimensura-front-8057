@@ -48,17 +48,17 @@ class TableVisaciones extends Component {
                     exportWidth: '8%',
                     show: true,
                     Filter: ({ filter, onChange }) =>
-                    <ParadigmaAsyncSeeker
-                        url={api.comitentes.comitentes}
-                        value={filter ? filter.value : ""}
-                        onChange={data => (data) ? (onChange(data.apellido_nombre)): ((filter) ? onChange('') : null)}
-                        displayField={"apellido_nombre"}
-                        valueField={'apellido_nombre'}
-                        parameters={{
-                            paginationEnabled:false,
-                            sort:['apellido_nombre'],
-                        }}
-                    />
+                        <ParadigmaAsyncSeeker
+                            url={api.comitentes.comitentes}
+                            value={filter ? filter.value : ""}
+                            onChange={data => (data) ? (onChange(data.apellido_nombre)) : ((filter) ? onChange('') : null)}
+                            displayField={"apellido_nombre"}
+                            valueField={'apellido_nombre'}
+                            parameters={{
+                                paginationEnabled: false,
+                                sort: ['apellido_nombre'],
+                            }}
+                        />
                 },
                 {
                     Header: "Encomienda",
@@ -96,15 +96,16 @@ class TableVisaciones extends Component {
                     show: true,
                     Filter: ({ filter, onChange }) => <div className={"date-filter has-value"}>
                         <ParadigmaDatePicker
-                                dateFormat="DD/MM/YYYY"
-                                value={filter ? moment(filter.value).format('DD/MM/YYYY') : ''}
-                                onChange={date => {
-                                    onChange((moment(date).isValid()) ? (moment(date).format('YYYY-MM-DD')) : (''))}}
-                            />
+                            dateFormat="DD/MM/YYYY"
+                            value={filter ? moment(filter.value).format('DD/MM/YYYY') : ''}
+                            onChange={date => {
+                                onChange((moment(date).isValid()) ? (moment(date).format('YYYY-MM-DD')) : (''))
+                            }}
+                        />
                         <div className="date-filter__buttons">
                             <button
                                 className="date-filter__button date-filter__button-close"
-                                onClick={(e) => {onChange('')}}
+                                onClick={(e) => { onChange('') }}
                             >
                                 <i className={'fa fa-times'}></i>
                             </button>
@@ -118,37 +119,38 @@ class TableVisaciones extends Component {
                     exportWidth: '7%',
                     show: true,
                     Filter: ({ filter, onChange }) => <div className={"date-filter has-value"}>
-                            <ParadigmaDatePicker
-                                    dateFormat="DD/MM/YYYY"
-                                    value={filter ? moment(filter.value).format('DD/MM/YYYY') : ''}
-                                    onChange={date => {
-                                        onChange((moment(date).isValid()) ? (moment(date).format('YYYY-MM-DD')) : (''))}}
-                                />
-                            <div className="date-filter__buttons">
-                                <button
-                                    className="date-filter__button date-filter__button-close"
-                                    onClick={(e) => {onChange('')}}
-                                >
-                                    <i className={'fa fa-times'}></i>
-                                </button>
-                            </div>
+                        <ParadigmaDatePicker
+                            dateFormat="DD/MM/YYYY"
+                            value={filter ? moment(filter.value).format('DD/MM/YYYY') : ''}
+                            onChange={date => {
+                                onChange((moment(date).isValid()) ? (moment(date).format('YYYY-MM-DD')) : (''))
+                            }}
+                        />
+                        <div className="date-filter__buttons">
+                            <button
+                                className="date-filter__button date-filter__button-close"
+                                onClick={(e) => { onChange('') }}
+                            >
+                                <i className={'fa fa-times'}></i>
+                            </button>
                         </div>
+                    </div>
                 },
                 {
                     Header: "Estado",
                     id: "estado_id",
-                    accessor: e =><div
-                            className="btn py-0"
-                             
-                        >
-                            {e.controlestados != null ? e.controlestados.nombre : 'No asignado'}
-                        </div>,
+                    accessor: e => <div
+                        className="btn py-0"
+
+                    >
+                        {e.controlestados != null ? e.controlestados.nombre : 'No asignado'}
+                    </div>,
                     width: 160,
                     exportWidth: '5%',
                     show: true,
                 },
             ],
-            listaGrupoVisaciones : [],
+            listaGrupoVisaciones: [],
             listaEstadosVisaciones: [],
         };
     }
@@ -173,7 +175,7 @@ class TableVisaciones extends Component {
             })
         });
 
-         apiFunctions.get(api.visaciones.controlEstadosSelect, null, null, null, (response) => {
+        apiFunctions.get(api.visaciones.controlEstadosSelect, null, null, null, (response) => {
             this.setState(
                 {
                     listaEstadosVisaciones: response.data
@@ -192,34 +194,34 @@ class TableVisaciones extends Component {
                 buttons={[
                     {
                         create: true,
-                        component: (props) => <Modal {...props} action="CREATE"  lista_estados={listaEstadosVisaciones}   listaGrupoVisaciones={listaGrupoVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
-                        permission: 'encomiendaprofesional_new',
+                        component: (props) => <Modal {...props} action="CREATE" lista_estados={listaEstadosVisaciones} listaGrupoVisaciones={listaGrupoVisaciones} list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        permission: 'visaciones_new',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="EDIT"  lista_estados={listaEstadosVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
-                        permission: 'encomiendaprofesional_edit',
+                        component: (props) => <Modal {...props} action="EDIT" lista_estados={listaEstadosVisaciones} list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        permission: 'visaciones_edit',
                     },
                     {
                         edit: true,
-                        component: (props) => <Modal {...props} action="DETAIL" lista_estados={listaEstadosVisaciones}  list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
-                        permission: 'encomiendaprofesional_detail',
+                        component: (props) => <Modal {...props} action="DETAIL" lista_estados={listaEstadosVisaciones} list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
+                        permission: 'visaciones_detail',
                     },
                     {
                         edit: true,
                         component: (props) => <Modal {...props} action="DELETE" lista_estados={listaEstadosVisaciones} list_tipovisaciones={list_tipovisaciones} list_encomienda={list_encomienda} />,
-                        permission: 'encomiendaprofesional_delete',
-                    },                 
-                   {
-                        edit: true,
-                        component: (props) => <CambioEstado {...props}   lista_estados_r={listaEstadosVisaciones}  list_encomienda={list_encomienda} action="DELETE" />,
-                        permission: 'encomiendaprofesional_edit',
+                        permission: 'visaciones_delete',
                     },
                     {
                         edit: true,
-                        component: (props) => <CambioEstado {...props}  lista_estados_r={listaEstadosVisaciones}   list_encomienda={list_encomienda} action="EDIT" />,
-                        permission: 'encomiendaprofesional_edit',
-                    },                                   
+                        component: (props) => <CambioEstado {...props} lista_estados_r={listaEstadosVisaciones} list_encomienda={list_encomienda} action="DELETE" />,
+                        permission: 'visaciones_edit',
+                    },
+                    {
+                        edit: true,
+                        component: (props) => <CambioEstado {...props} lista_estados_r={listaEstadosVisaciones} list_encomienda={list_encomienda} action="EDIT" />,
+                        permission: 'visaciones_edit',
+                    },
                 ]}
                 apiUrl={api.visaciones.encomienda}
                 columns={this.state.columns}
