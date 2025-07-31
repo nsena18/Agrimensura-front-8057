@@ -39,10 +39,10 @@ class Profesiones extends Component {
     render() {
         const { data, pages, loading } = this.state;
         const outerSort = [
-          {
-            id: 'nombre',
-            desc: false
-          },
+            {
+                id: 'nombre',
+                desc: false
+            },
         ];
         return (
             <ParadigmaTable
