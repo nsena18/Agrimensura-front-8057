@@ -58,7 +58,7 @@ class Modal extends Component {
             comitentesentidades_id: 0,
             organismo: null,
             listaestadosid: [],
-            
+
         });
     }
 
@@ -159,11 +159,11 @@ class Modal extends Component {
             return {
                 get: false,
                 submitType: "POST",
-                title: "Nuevo Estado",
+                title: "Nueva Plantilla de Visaciones",
                 buttonTitle: "Nuevo",
                 danger: false,
                 buttonIcon: "fa fa-plus fa-lg",
-                successMessage: "El Estado ha sido creado con éxito.",
+                successMessage: "La Plantilla de Visaciones ha sido creado con éxito.",
                 saveButton: true,
                 saveButtonLabel: "Guardar",
                 buttonClass: "",
@@ -173,11 +173,11 @@ class Modal extends Component {
             return {
                 get: true,
                 submitType: "PUT",
-                title: "Editar Estado",
+                title: "Editar Plantilla de Visaciones",
                 buttonTitle: "Editar",
                 danger: false,
                 buttonIcon: "fa fa-pencil fa-lg",
-                successMessage: "El estado se eduti con éxito.",
+                successMessage: "La Plantilla de Visaciones se eduti con éxito.",
                 saveButton: true,
                 saveButtonLabel: "Guardar",
                 buttonClass: "",
@@ -202,11 +202,11 @@ class Modal extends Component {
             return {
                 get: true,
                 submitType: "DELETE",
-                title: "Eliminar Estado",
+                title: "Eliminar Plantilla de Visaciones",
                 buttonTitle: "Eliminar",
                 danger: true,
                 buttonIcon: "fa fa-trash fa-lg",
-                successMessage: "El Estado ha sido eliminado con éxito.",
+                successMessage: "la Plantilla de Visaciones ha sido eliminado con éxito.",
                 saveButton: true,
                 saveButtonLabel: "Eliminar",
                 buttonClass: "btn-danger",
@@ -218,7 +218,7 @@ class Modal extends Component {
 
     render() {
         const { listEntidades, listaControlEstados } = this.props;
-        const { 
+        const {
             numero,
             nombre,
             background,
@@ -264,7 +264,7 @@ class Modal extends Component {
                 escClose={true}
                 // className={'modal-lg'}
             >
-           
+
                 <Row>
                     <Col className={'col-12'}>
                         <ParadigmaLabeledInput
@@ -277,7 +277,7 @@ class Modal extends Component {
                             error={() => this.getError('nombre')}
                         />
                     </Col>
-                    
+
                     <Col className={'col-6 mt-2'}>
                         <ParadigmaLabeledInput
                             disabled={false}
@@ -330,7 +330,7 @@ class Modal extends Component {
                                     value={texto}
                                 />
                             }
-                        /> 
+                        />
                     </Col>
 
                     <Col className={'col-12 mt-2'}>
@@ -344,14 +344,14 @@ class Modal extends Component {
                                     disabled={vars.disabled}
                                     multiselect={true}
                                     clearable={false}
-                                    url={undefined}
+                                    url={api.visaciones.controlEstadosSelect}
                                     value={listaestadosid}
                                     optionDefault={listaControlEstados.map(e => {return { id: e.id, nombre: e.nombre, numero: e.numero }})}
                                     parameters={{
                                         paginationEnabled:false,
                                     }}
                                     valueRenderer={data => `${data.numero} => ${data.nombre}`}
-                                    optionRenderer={data => `${data.numero} => ${data.nombre}`}                                
+                                    optionRenderer={data => `${data.numero} => ${data.nombre}`}
                                     onChange={data => this.onChangeField('listaestadosid', data ? data.map(e => e.id) : [])}
                                 />
                             }
@@ -373,7 +373,7 @@ class Modal extends Component {
                                                 error={() => this.getError('tituloModal')}
                                                 value={titulomodal}
                                                 onChange={(e) => this.onChangeField('titulomodal', e.target.value)}
-                                            /> 
+                                            />
                                         </Col>
 
                     <Col className={'col-12 mt-2'}>
@@ -384,7 +384,7 @@ class Modal extends Component {
                             error={() => this.getError('labelarchivo')}
                             value={labelarchivo}
                             onChange={(e) => this.onChangeField('labelarchivo', e.target.value)}
-                        /> 
+                        />
                     </Col>
 
                     {/* Mail */}
@@ -439,10 +439,10 @@ class Modal extends Component {
                                     label={"Email de la entidad"}
                                     error={null}
                                     value={organismo == null ? '' : (organismo.email || 'Sin email')}
-                                    
-                                /> 
+
+                                />
                             </Col>
-                        </Row>  
+                        </Row>
                     </Col>
 
                 </Row>
