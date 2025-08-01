@@ -48,7 +48,7 @@ class Modal extends Component {
     resetForm() {
         this.setState({
             id: null,
-            fechaIngreso: moment(),            
+            fechaIngreso: moment(),
             //Cambio Estado
             estado: '',
             estado_id: 0,
@@ -76,7 +76,7 @@ class Modal extends Component {
         return data;
     }
 
-    searchEstadoVisacion(id) {   
+    searchEstadoVisacion(id) {
         const { lista_estados_r  } = this.props;
        let estadoEncontrado = lista_estados_r.find(x => x.id == id );
        console.log(estadoEncontrado)
@@ -87,12 +87,12 @@ class Modal extends Component {
     }
 
     filtrarDesdePosicion(array, elementoInicial) {
-        const indice = array.indexOf(elementoInicial);        
+        const indice = array.indexOf(elementoInicial);
         if (indice === -1) {
           console.log(`El elemento "${elementoInicial}" no existe en el array`);
           return [];
         }
-        
+
         return array.slice(indice);
       }
 
@@ -121,10 +121,10 @@ class Modal extends Component {
                             estado: e.estado_id,
                             lista_estados: e.estadosplantillas.listaestadosid
                         }));
-                    
+
                     if(visacionesFormateada.length > 0) {
-                        let existe = visacionesFormateada.some(e => 
-                            e.estado == 'Previa' || 
+                        let existe = visacionesFormateada.some(e =>
+                            e.estado == 'Previa' ||
                             e.estado == 'Observada'
                         );
                         this.setState({
@@ -140,7 +140,7 @@ class Modal extends Component {
                                 nombre: e.nombre,
                             }))
                          this.setState({
-                            lista_estados :newEstados,                            
+                            lista_estados :newEstados,
                             encomiendaRef: data.encomiendaprofesional.nroOrden
                         })
                     }
@@ -185,7 +185,7 @@ class Modal extends Component {
     modalVars() {
         const { estado, estadoAnterior, estadoARetroceder, lista_estados, tituloModal, isGoProcess } = this.state;
         const { action, ar_estados } = this.props;
-        
+
         if (action == "EDIT") {
             return {
                 get: true,
@@ -229,13 +229,13 @@ class Modal extends Component {
 
         let errors = {};
         let valid = true;
-        if(action=='EDIT'){
-            // Valido si el cambio de estado exige un archivo
-            if(archivo==null){
-                errors['archivo'] = [{code: "blank", detail: "Seleccione un archivo"}]
-                valid = false;
-            }
-        }
+        // if(action=='EDIT'){
+        //     // Valido si el cambio de estado exige un archivo
+        //     if(archivo==null){
+        //         errors['archivo'] = [{code: "blank", detail: "Seleccione un archivo"}]
+        //         valid = false;
+        //     }
+        // }
 
         this.setState({errors: errors})
 
@@ -256,7 +256,7 @@ class Modal extends Component {
         let valRes = false;
         if (res) {
             valRes = res.mostrarImporte;
-        } 
+        }
         this.setState({estado: data.id, mostrarImporte: valRes})
     }
 
@@ -295,7 +295,7 @@ class Modal extends Component {
                 { (action!='DELETE' && isGoProcess ) ?
 
                     <Fragment>
-                        {/* Si se puede avanzar a mas de un estado, se muestra un asyncseeker para elegir el estado a avanzar */} 
+                        {/* Si se puede avanzar a mas de un estado, se muestra un asyncseeker para elegir el estado a avanzar */}
                         <ParadigmaLabeledInput
                                 label={'Avanzar a'}
                                 md={[4, 8]}
@@ -316,11 +316,11 @@ class Modal extends Component {
                             label={labelarchivo}
                             md={[4, 8]}
                             inputComponent={
-                                <Input 
-                                    id={'inp_arch'} 
-                                    onChange={e => this.setState({ archivo: e.target.files[0] })} 
-                                    type="file" 
-                                    disabled={vars.disabled} 
+                                <Input
+                                    id={'inp_arch'}
+                                    onChange={e => this.setState({ archivo: e.target.files[0] })}
+                                    type="file"
+                                    disabled={vars.disabled}
                                 />
                             }
                             error={() => this.getError('archivo')}
@@ -348,9 +348,9 @@ class Modal extends Component {
                                     <li  key={i} className="list-group-item d-flex justify-content-between align-items-center">
                                         {data.numero} - {data.nombre}
                                         <span className={
-                                            'badge ' + 
-                                            (data.estado === 'Definitiva' 
-                                              ? 'badge-primary' 
+                                            'badge ' +
+                                            (data.estado === 'Definitiva'
+                                              ? 'badge-primary'
                                               : 'badge-danger')
                                           }>{data.estado}</span>
                                     </li>
@@ -359,8 +359,8 @@ class Modal extends Component {
                                 <div className="text-muted text-center py-3">
                                     No hay visaciones registradas
                                 </div>
-                            )}                           
-                        </ul>    
+                            )}
+                        </ul>
 
                     </Fragment>
                     :
