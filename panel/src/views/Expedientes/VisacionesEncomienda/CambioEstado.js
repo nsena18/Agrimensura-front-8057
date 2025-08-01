@@ -313,10 +313,12 @@ class Modal extends Component {
 
                         <ParadigmaLabeledInput
                             // Asigno el label segun el estado (labelArchivo) y si es obligatorio (archivoObligatorio) agrego un *
-                            label={labelarchivo}
+                            label={"Doc. 1 -"+ labelarchivo}
                             md={[4, 8]}
+
                             inputComponent={
                                 <Input
+
                                     id={'inp_arch'}
                                     onChange={e => this.setState({ archivo: e.target.files[0] })}
                                     type="file"

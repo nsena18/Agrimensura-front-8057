@@ -30,6 +30,7 @@ class Modal extends Component {
             idGrupoVisacion: null,
             fechacaducidad: moment(),
             fechaestimacion: moment(),
+            nro_expediente:null,
             postVariables: [
                 'estadosplantillas',
                 'estadosplantillas_id',
@@ -38,6 +39,7 @@ class Modal extends Component {
                 'fechacaducidad',
                 'fechaestimacion',
                 'estado_id',
+                'nro_expediente',
                 'idGrupoVisacion',
                 'lista_correlativos',
             ],
@@ -71,6 +73,7 @@ class Modal extends Component {
             fechacaducidad: moment(),
             fechaestimacion: moment(),
             estado_id: 0,
+            nro_expediente:null,
             errors: [],
             listObservaciones: [],
             listVisacionesEncomienda: [],
@@ -84,7 +87,7 @@ class Modal extends Component {
 
     getData() {
         const { action, list_encomienda, listaGrupoVisaciones } = this.props;
-        const { postVariables, fechacaducidad, fechaestimacion, idGrupoVisacion, encomiendaprofesional_id, opcionSeleccionada } = this.state;
+        const { postVariables, fechacaducidad, fechaestimacion, idGrupoVisacion, encomiendaprofesional_id, opcionSeleccionada, nro_expediente } = this.state;
         let data = {};
         postVariables.forEach(x => {
             data[x] = this.state[x];
@@ -134,6 +137,7 @@ class Modal extends Component {
                 data['fechacaducidad'] = moment().add(1, 'd').format('YYYY-MM-DD');
                 console.log(data.fechacaducidad)
                 data['fechaestimacion'] = moment().format('YYYY-MM-DD');
+                data['nro_expediente'] = nro_expediente;
             }
         }
 
@@ -155,6 +159,7 @@ class Modal extends Component {
                 fechacaducidad: moment(data.fechacaducidad),
                 fechaestimacion: moment(data.fechaestimacion),
                 estado_id: data.estado_id,
+                nro_expediente: data.nro_expediente,
                 lista_correlativos: data.lista_correlativos == null ? [] : data.lista_correlativos,
             });
 
@@ -429,7 +434,7 @@ class Modal extends Component {
             opcionSeleccionada,
             idGrupoVisacion,
             listaVisacionesPorGrupo,
-            textoEstado,
+            textoEstado,nro_expediente,
             estado_id } = this.state;
 
         return (
@@ -610,6 +615,14 @@ class Modal extends Component {
                                             />
                                         }
                                     />
+                                    <ParadigmaLabeledInput
+                                                        disabled={vars.disabled}
+                                                        md={[4, 8]}
+                                                        label={"N° expediente"}
+                                                        value={nro_expediente}
+                                                        onChange={(e) => this.onChangeField('nro_expediente', e.target.value)}
+                                                        error={() => this.getError('nro_expediente')}
+                                                    />
                                     <ParadigmaLabeledInput
                                         disabled={vars.disabled}
                                         md={[4, 8]}
